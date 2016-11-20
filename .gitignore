@@ -51,7 +51,7 @@ zipcode.*
 *.xlsx
 
 # Image Folder
-webroot/media/
+#webroot/media/
 
 # PyCharm
 .idea/
