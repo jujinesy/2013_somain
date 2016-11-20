@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical" >
+
+    <LinearLayout style="@style/documentRowLayout" >
+
+        <TextView
+            android:id="@+id/tvDocumentListItemKey"
+            style="@style/documentLeftTextView"
+            android:text="문서타입" />
+
+        <TextView
+            android:id="@+id/tvDocumentListItemValue"
+            style="@style/documentRightTextView"
+            android:lineSpacingExtra="5dp"
+            android:text="멘토링 보고서" />
+    </LinearLayout>
+
+</LinearLayout>

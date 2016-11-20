@@ -1,0 +1,359 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>강의실 예약</title>
+
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.theme.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.icons.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui-dtpicker.css' %}">
+	<style>
+		div.datepair input[type="text"] {
+			width: 150px;
+		}
+	</style>
+</head>
+<body data-tuktuk="boxes">
+	<section>
+		<header class="bck light">
+			<h3 class="on-left text thin">강의실 예약</h3>
+		</header>
+		<article class="padding scroll">
+			<!-- <div class="margin-bottom">
+				<button type="button" id="recent_btn" style="width: 100%">
+					<span class="icon cloud-download"></span> 최근 입력정보 가져오기
+				</button>
+			</div>
+			 -->
+			<form id="form" method="post" action="">
+				{% csrf_token %}
+				<div class="margin-top margin-bottom">
+					<h4 class="text book inline"><span class="icon calendar color theme"></span> 예약 강의실 및 시간 선택</h4>
+				</div>
+				<div>
+					<div>
+						<label for="{{ form.room.id_for_label }}">{{ form.room.label }}</label>
+						<span class="select">
+							{{ form.room }}
+						</select>
+					</div>
+					<div>
+						<label>사용시간 지정</label>
+						<div class="datepair">
+							<input type="text" id="start_date" name="start_date" readonly>
+							<input type="text" id="end_date" name="end_date" readonly>
+						</div>
+					</div>
+					<div id="datepair_action">
+						<button type="button" data-action="+30">
+							<span class="icon plus-sign"></span>30분
+						</button>
+						<button type="button" data-action="-30" class="secondary">
+							<span class="icon minus-sign"></span>30분
+						</button>
+						<button type="button" data-action="+60">
+							<span class="icon plus-sign"></span>1시간
+						</button>
+						<button type="button" data-action="-60" class="secondary">
+							<span class="icon minus-sign"></span>1시간
+						</button>
+					</div>
+					<div class="margin-top">
+						<label>전체 시간</label>
+						<div id="total_time">
+							<span class="text">0</span> 시간
+						</div>
+					</div>
+					<div class="margin-top">
+						<button id="check_btn" type="button" class="secondary" style="width: 100%">
+							<span class="icon search"></span> <span class="text">사용가능여부 확인하기</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="margin-top margin-bottom">
+					<h4 class="text book inline"><span class="icon group color theme"></span> 예약 정보 입력</h4>
+				</div>
+				<div>
+					<div>
+						<label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+						{{ form.name }}
+					</div>
+					<div>
+						<label for="{{ form.team.id_for_label }}">{{ form.team.label }}</label>
+						{{ form.team }}
+					</div>
+					<div>
+						<label for="{{ form.count.id_for_label }}">{{ form.count.label }}</label>
+						{{ form.count }}
+					</div>
+					<div>
+						<label for="{{ form.type.id_for_label }}">{{ form.type.label }}</label>
+						<span class="select">
+							{{ form.type }}
+						</span>
+					</div>
+					<div>
+						<label for="{{ form.admin.id_for_label }}">{{ form.admin.label }}</label>
+						{{ form.admin }}
+					</div>
+					<div>
+						<div>
+							<label for="{{ form.admin_tel.id_for_label }}">{{ form.admin_tel.label }}</label>
+						</div>
+						{{ form.admin_tel }}
+					</div>
+					<div>
+						<label for="{{ form.message.id_for_label }}">{{ form.message.label }}</label>
+						{{ form.message }}
+					</div>
+				</div>
+
+				<div class="margin-top margin-bottom">
+					<button type="submit" style="width: 100%">
+						<span class="icon ok"></span>
+						예약하기
+					</button>
+				</div>
+			</form>
+		</article>
+	</section>
+
+	<script src="{% static 'js/jquery/jquery.js' %}"></script>
+	<script src="{% static 'js/tuktuk/tuktuk.js' %}"></script>
+	<script src="{% static 'js/jquery-ui/jquery-ui.js' %}"></script>
+	<script src="{% static 'js/jquery-ui/jquery-ui-dtpicker.js' %}"></script>
+	<script src="{% static 'js/moment/moment.js' %}"></script>
+	<script>
+	var on_ready = function() {
+		var _checked = false, _submit = false;
+		var btn = $('#check_btn'), start_date = $('#start_date'), end_date = $('#end_date'),
+			pair_button = $('#datepair_action button'), total_time = $('#total_time span.text');
+		$('#{{ form.room.id_for_label }}, div.datepair input').change(function() {
+			_checked = false;
+		});
+		var recent = null;
+
+		start_date.val(start_date.val().replace('AM', '오전').replace('PM', '오후'));
+		end_date.val(end_date.val().replace('AM', '오전').replace('PM', '오후'));
+
+		// 30 분 단위로 min_date 생성
+		var t = 1000 * 60 * 30;
+		var min_date = new Date(Math.round(Date.now() / t) * t);
+
+		function convert_moment(text) {
+			return moment(text.replace('오전', 'AM').replace('오후', 'PM'), 'YYYY-MM-DD ahh:mm', 'ko');
+		}
+
+		function convert_string(mmt) {
+			return mmt.format("YYYY-MM-DD Ahh:mm").replace('AM', '오전').replace('PM', '오후');
+		}
+
+		function update_total_time() {
+			if(!start_date.val() || !end_date.val()) return;
+			var sec = (convert_moment(end_date.val()) - convert_moment(start_date.val())) / 1000;
+			total_time.text(
+				Math.floor(sec / 3600) + '시간 ' + (sec % 3600) / 1800 * 30 + '분'
+			);
+
+			_checked = false;
+		}
+
+		start_date.datetimepicker({
+			timeFormat: 'tthh:mm',
+			stepHour: 1,
+			stepMinute: 30,
+			controlType: 'select',
+			minDate: min_date,
+			onClose: function(dateText, inst) {
+				if (end_date.val() != '') {
+					var testStartDate = start_date.datetimepicker('getDate');
+					var testEndDate = end_date.datetimepicker('getDate');
+					if (testStartDate > testEndDate)
+						end_date.datetimepicker('setDate', testStartDate);
+				}
+				else {
+					end_date.val(convert_string(convert_moment(start_date.val()).add('hour', '1')));
+				}
+
+				update_total_time();
+			},
+			onSelect: function(selectedDateTime) {
+				end_date.datetimepicker('option', 'minDate', start_date.datetimepicker('getDate'));
+			}
+		});
+		end_date.datetimepicker({ 
+			timeFormat: 'tthh:mm',
+			stepHour: 1,
+			stepMinute: 30,
+			controlType: 'select',
+			minDate: min_date,
+			onClose: function(dateText, inst) {
+				if (start_date.val() != '') {
+					var testStartDate = start_date.datetimepicker('getDate');
+					var testEndDate = end_date.datetimepicker('getDate');
+					if (testStartDate > testEndDate)
+						start_date.datetimepicker('setDate', testEndDate);
+				}
+
+				update_total_time();
+				if(start_date.val() != '' && $('#{{ form.room.id_for_label }}').val() != '') {
+					check_available();
+				}
+			}
+		});
+
+		pair_button.click(function() {
+			if(start_date.val() == '') {
+				alert('시작 날짜를 선택해주세요.');
+				return;
+			}
+
+			var action = parseInt($(this).data('action'));
+			var end = end_date.val() ? convert_moment(end_date.val()) : convert_moment(start_date.val());
+
+			end.add('minute', action);
+			if(end - convert_moment(start_date.val()) <= 0) {
+				alert('종료 시간은 시작 시간보다 작거나 같을 수 없습니다.');
+				return;
+			} 
+			end_date.val(convert_string(end));
+			update_total_time();
+		});
+
+		function loadRecent() {
+			if(!recent) return;
+			$('#{{ form.name.id_for_label }}').val(recent.name);
+			$('#{{ form.team.id_for_label }}').val(recent.team);
+			$('#{{ form.count.id_for_label }}').val(recent.count);
+			$('#{{ form.type.id_for_label }}').val(recent.type);
+			$('#{{ form.admin.id_for_label }}').val(recent.admin);
+
+			var admtel = [
+				$('#id_admin_tel_0'),
+				$('#id_admin_tel_1'),
+				$('#id_admin_tel_2'),
+			];
+			admtel[0].val(recent.admin_tel.substr(0, 3));
+			admtel[1].val(recent.admin_tel.substr(3, 4));
+			admtel[2].val(recent.admin_tel.substr(7, 4));
+		}
+
+		function check_available() {
+			$(btn).attr('disabled', 'disabled');
+			$.ajax({
+				type: 'POST',
+				url: '/lecture/new/check',
+				data: {
+					'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val(),
+					'room': $('#{{ form.room.id_for_label }}').val(),
+					'start': start_date.val().replace('오전', 'AM').replace('오후', 'PM'),
+					'end': end_date.val().replace('오전', 'AM').replace('오후', 'PM'),
+				},
+				success: function(data) {
+					$(btn).removeAttr('disabled');
+					if(!data.success || !data.available) {
+						_checked = false;
+						alert(data.why);
+						$(btn).removeClass().addClass('alert')
+						.children('span.icon').removeClass().addClass(['icon', 'ok'])
+						.end().children('span.text').text('확인 실패 (클릭: 재확인)');
+					} else if(data.success && data.available) {
+						$(btn).removeClass().addClass('success')
+						.children('span.icon').removeClass().addClass(['icon', 'remove'])
+						.end().children('span.text').text('확인 성공 (클릭: 재확인)');
+						_checked = true;
+					}
+				}
+			});
+		}
+
+		$(window).on('beforeunload', function() {
+			if(!_submit && $('#form').data('changed'))
+				return '이 페이지를 벗어나면 작성중인 내용이 삭제됩니다.';
+		});
+
+		$('#form').submit(function() {
+			if(!_checked) {
+				alert('예약할 강의실과 시간을 정한 후 확인을 눌러주세요.');
+				$('#{{ form.room.id_for_label }}').focus();
+				return false;
+			}
+
+			if(!$('#{{ form.name.id_for_label }}').val()) {
+				alert('회의명을 입력하세요.');
+				$('#{{ form.name.id_for_label }}').focus();
+				return false;
+			}
+
+			if(!$('#{{ form.team.id_for_label }}').val()) {
+				alert('소속을 입력하세요.');
+				$('#{{ form.team.id_for_label }}').focus();
+				return false;
+			}
+
+			var cnt = $('#{{ form.count.id_for_label }}').val();
+			if(!/^[0-9]+$/.test(cnt)) {
+				alert('참석 인원을 숫자로 입력해주세요.');
+				$('#{{ form.count.id_for_label }}').focus();
+				return false;
+			}
+
+			if(!$('#{{ form.type.id_for_label }}').val()) {
+				alert('사용 목적을 선택해주세요.');
+				$('#{{ form.type.id_for_label }}').focus();
+				return false;
+			}
+
+			if(!$('#{{ form.admin.id_for_label }}').val()) {
+				alert('담당자 이름을 입력해주세요.');
+				$('#{{ form.admin.id_for_label }}').focus();
+				return false;
+			}
+
+			var admtel = [
+				$('#id_admin_tel_0'),
+				$('#id_admin_tel_1'),
+				$('#id_admin_tel_2'),
+			];
+			for(var i = 0; i < admtel.length; i++) {
+				if(!/^[0-9]{3,4}$/.test(admtel[i].val())) {
+					alert('담당자 연락처를 숫자로 입력해주세요.');
+					admtel[i].focus();
+					return false;
+				}
+			}
+
+			start_date.val(start_date.val().replace('오전', 'AM').replace('오후', 'PM'));
+			end_date.val(end_date.val().replace('오전', 'AM').replace('오후', 'PM'));
+
+			_submit = true;
+		});
+
+		$.ajax({
+			type: 'GET',
+			url: '{% url 'lecture:recent' %}',
+			success: function(data) {
+				if(data.success) {
+					recent = data.result;
+					if(confirm('최근 입력 내용이 있습니다.\n가져오시겠습니까?')) {
+						loadRecent();
+					}
+				}
+			}
+		});
+
+		$(btn).click(check_available);
+		$('#form :input').change(function() {
+			$(this).data('changed', true);
+		});
+	};
+
+	$(document).ready(on_ready);
+	</script>
+</body>
+</html>

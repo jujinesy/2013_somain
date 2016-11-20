@@ -1,0 +1,152 @@
+{% extends 'registration/base.html' %}
+{% load staticfiles %}
+
+{% block style %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="content container-fluid">
+	<div class="row-fluid">
+		<div class="span8 offset2">
+			<h2 class="page-title">경력사항 추가  <small>Career</small></h2>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span8 offset2">
+			<section class="widget">
+				<header>
+					<legend class="section"><i class="icon-file"></i> 유의사항  <small>Terms &amp; conditions of use</small></legend>
+				</header>
+				<div class="body">
+					<form class="form-horizontal label-left" novalidate="novalidate" method="POST" data-validate="parsley">
+						{% csrf_token %}
+						<div class="row-fluid">
+							<div class="span12" style="padding: 10px;   ">
+								제 1 조 (목적)<br/>
+								<br/>
+								이 약관은 네이버 주식회사 ("회사" 또는 "네이버")가 제공하는 네이버, 미투데이(me2day.net) 및 네이버와 미투데이 관련 제반 서비스의 이용과 관련하여 회사와 회원과의 권리, 의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 합니다.<br/>
+								제 2 조 (정의)<br/>
+								<br/>
+								이 약관에서 사용하는 용어의 정의는 다음과 같습니다.<br/>
+								①"서비스"라 함은 구현되는 단말기(PC, TV, 휴대형단말기 등의 각종 유무선 장치를 포함)와 상관없이 "회원"이 이용할 수 있는 네이버, 미투데이(me2day.net) 및 네이버와 미투데이 관련 제반 서비스를 의미합니다.<br/>
+								②"회원"이라 함은 회사의 "서비스"에 접속하여 이 약관에 따라 "회사"와 이용계약을 체결하고 "회사"가 제공하는 "서비스"를 이용하는 고객을 말합니다.
+								③"아이디(ID)"라 함은 "회원"의 식별과 "서비스" 이용을 위하여 "회원"이 정하고 "회사"가 승인하는 문자와 숫자의 조합을 의미합니다.<br/>
+								④"비밀번호"라 함은 "회원"이 부여 받은 "아이디와 일치되는 "회원"임을 확인하고 비밀보호를 위해 "회원" 자신이 정한 문자 또는 숫자의 조합을 의미합니다.<br/>
+								⑤"유료서비스"라 함은 "회사"가 유료로 제공하는 각종 온라인디지털콘텐츠(각종 정보콘텐츠, VOD, 아이템 기타 유료콘텐츠를 포함) 및 제반 서비스를 의미합니다.
+								⑥"포인트"라 함은 서비스의 효율적 이용을 위해 회사가 임의로 책정 또는 지급, 조정할 수 있는 재산적 가치가 없는 "서비스" 상의 가상 데이터를 의미합니다.<br/>
+								⑦"게시물"이라 함은 "회원"이 "서비스"를 이용함에 있어 "서비스상"에 게시한 부호ㆍ문자ㆍ음성ㆍ음향ㆍ화상ㆍ동영상 등의 정보 형태의 글, 사진, 동영상 및 각종 파일과 링크 등을 의미합니다.<br/>
+							</div>
+						</div>
+						<fieldset>
+							
+						</fieldset>
+						<fieldset>
+							<legend class="section"><i class="icon-circle-blank"></i>    수상 정보</legend>
+							<div class="control-group">
+								<label for="{{ form.title.id_for_label }}" class="control-label">
+									{{ form.title.label }}
+								</label>
+								<div class="controls controls-row">
+									{{ form.title }}
+									<span class="help-inline">
+										{{ form.title.errors }}
+									</span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label for="{{ form.start_date.id_for_label }}" class="control-label">
+									{{ form.start_date.label }}
+								</label>
+								<div class="controls controls-row">
+									{{ form.start_date }}
+									<span class="help-inline">
+										{{ form.start_date.errors }}
+									</span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label for="{{ form.end_date.id_for_label }}" class="control-label">
+									{{ form.end_date.label }}
+								</label>
+								<div class="controls controls-row">
+									{{ form.end_date }}
+									<span class="help-inline">
+										{{ form.end_date.errors }}
+									</span>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label for="{{ form.description.id_for_label }}" class="control-label">
+									{{ form.description.label }}
+								</label>
+								<div class="controls controls-row">
+									{{ form.description }}
+									<span class="help-inline">
+										{{ form.description.errors }}
+									</span>
+								</div>
+							</div>
+
+						</fieldset>
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary span9">경력사항 추가</button>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}
+
+
+{% block bottom_script %}
+<!-- jquery and friends -->
+<script src="{% static 'lib/jquery/jquery.1.9.0.min.js' %}"> </script>
+<script src="{% static 'lib/jquery/jquery-migrate-1.1.0.min.js' %}"> </script>
+
+<!-- jquery plugins -->
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"> </script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.autogrow-textarea.js' %}"></script>
+
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+
+<!-- bootstrap custom plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-select.js' %}"></script>
+
+
+<script src="{% static 'js/bootstrap/bootstrap-switch.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-colorpicker.js' %}"></script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<!-- page specific -->
+<script src="{% static 'js/forms-elemets.js' %}"></script>
+{% endblock %}
+
+{% block after_script %}
+{% endblock %}

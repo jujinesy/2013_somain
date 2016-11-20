@@ -1,0 +1,121 @@
+{% extends 'manager/base.html' %}
+{% load staticfiles %}
+
+{% block title %}활성 사용자 목록{% endblock %}
+
+{% block sidebar_group_user_class %}active{% endblock %}
+{% block sidebar_toggle_user_class %}{% endblock %}
+{% block sidebar_collapse_class %}in{% endblock %}
+
+{% block sidebar_li_user_all_class %}{% endblock %}
+{% block sidebar_li_user_approval_class %}active{% endblock %}
+{% block sidebar_li_user_wait_class %}{% endblock %}
+
+{% block content %}
+<div class="content container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 class="page-title">사용자 목록    <small>전체 사용자, 활성 사용자, 활성 대기 사용자를 관리할 수 있습니다</small></h2>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12 offset0">
+			<section class="widget">
+				<header>
+					<h4>
+						<i class="icon-file-alt"></i>
+						jQuery DataTables
+					</h4>
+				</header>
+				<div class="body">
+					<blockquote>
+						Column sorting, live search, pagination. Built with
+						<a href="http://www.datatables.net/" target="_blank">jQuery DataTables</a>
+					</blockquote>
+					<table id="datatable-table" class="table table-striped">
+						<thead>
+							<tr>
+								<th>순번</th>
+								<th class="no-sort">아이디</th>
+								<th>이름</th>
+								<th class="no-sort">이메일</th>
+								<th>나이</th>
+
+								<th class="no-sort hidden-phone-landscape">전화번호</th>
+								<th class="hidden-phone-landscape">생일</th>
+								<th class="hidden-phone-landscape">학교</th>
+							</tr>
+						</thead>
+						<tbody>
+
+
+							{% for user in users %}    
+							<tr>
+								<td>{{ forloop.counter }}</td>
+								<td><a href="{% url 'member:profile' user.id %}"><strong>{{ user.username }}</strong></a></td>
+								<td>{{ user.first_name }}{{ user.last_name }}</td>
+								<td>{{ user.email }}</td>
+								<td>{{ user.age }}</td>
+								<td class="hidden-phone-landscape">
+									<small>
+										<strong>자택:</strong>
+										&nbsp;{{ user.home_number }}
+									</small>
+									<br>
+									<small>
+										<strong>휴대전화:</strong>
+										&nbsp; {{ user.phone_number }}
+									</small>
+								</td>
+								<td class="hidden-phone-landscape">{{ user.birthday }}
+								</td>
+								<td>{{ user.school }}</td>
+							</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block bottom_script %}
+<!-- jquery and friends -->
+<script src="{% static 'lib/jquery/jquery.1.9.0.min.js' %}"> </script>
+<script src="{% static 'lib/jquery/jquery-migrate-1.1.0.min.js' %}"> </script>
+
+<!-- jquery plugins -->
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"> </script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.datatable.js' %}"></script>
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-pageable.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid-paginator.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tab.js' %}"> </script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<!-- page-specific js -->
+<script src="{% static 'js/admin/tables-dynamic.js' %}"></script>
+{% endblock %}

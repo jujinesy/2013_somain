@@ -1,0 +1,86 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>내 예약목록</title>
+
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.theme.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.icons.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.custom.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui-dtpicker.css' %}">
+	<style>
+		div.datepair input[type="text"] {
+			width: 150px;
+		}
+	</style>
+</head>
+<body data-tuktuk="boxes">
+	<section>
+		<header class="bck light">
+			<h3 class="on-left text thin">내 예약목록</h3>
+		</header>
+		<article class="padding scroll">
+			<!-- <div class="margin-bottom">
+				<button type="button" id="recent_btn" style="width: 100%">
+					<span class="icon cloud-download"></span> 최근 입력정보 가져오기
+				</button>
+			</div>
+			 -->
+			
+			<div class="margin-bottom">
+				최근 예약순으로 출력됩니다.
+			</div>
+			<div class="margin-top margin-bottom">
+				<ul class="lecture">
+					{% for lecture in lectures %}
+						<li>
+							<div>
+								<strong>{{ lecture.name|escape }}</strong> [{{ lecture.room.get_name }}]<br>
+								{{ lecture.start|date:'M d일 H:m' }} ~ {{ lecture.end|date:'M d일 H:m' }}
+
+								<div class="right">
+									<a href="javascript:void(0)" data-lecture-id="{{ lecture.id }}">
+										<span class="icon trash"></span>
+									</a>
+								<div>
+							</div>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</article>
+	</section>
+
+	<form id="delete" method="post" action="{% url 'lecture:delete' %}" class="hide">
+		{% csrf_token %}
+		<input type="hidden" name="id" value="">
+	</form>
+
+	<script src="{% static 'js/jquery/jquery.js' %}"></script>
+	<script src="{% static 'js/tuktuk/tuktuk.js' %}"></script>
+	<script src="{% static 'js/jquery-ui/jquery-ui.js' %}"></script>
+	<script src="{% static 'js/jquery-ui/jquery-ui-dtpicker.js' %}"></script>
+	<script src="{% static 'js/moment/moment.js' %}"></script>
+	<script>
+		var on_ready = function() {
+			var trashes = $('a[data-lecture-id]');
+			var delete_form = $('#delete');
+
+			trashes.click(function() {
+				if(confirm('예약을 취소하시겠습니까?')) {
+					var id = $(this).data('lecture-id');
+
+					delete_form.children('input[name="id"]').val(id);
+					delete_form.submit();
+				}
+			});
+		};
+
+		$(document).ready(on_ready);
+	</script>
+</body>
+</html>

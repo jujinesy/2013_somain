@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.hide {
+	display: none;
+}
+
+ul.lecture {
+	list-style: none;
+}
+
+ul.lecture li {
+	padding: 3px;
+}
+
+ul.lecture li:hover {
+	background-color: #dcdcdc;
+}
+
+ul.lecture li > div {
+	position: relative;
+	height: 36px;
+}
+
+ul.lecture li > div div.right {
+	position: absolute;
+	top: 0;
+	right: 0;
+	height: 36px;
+}
+
+ul.lecture li > div div.right a:not(:last-child) {
+	margin-right: 5px;
+}

@@ -1,0 +1,166 @@
+{% extends 'manager/document/mentoringreport/base_list_monthly.html' %}
+{% load staticfiles %}
+{% load custom_tag %}
+
+{% block content_document_title %}
+<legend>{{ max_date.year }}년 {{ max_date.month }}월 멘티별 멘토링 현황 <small>({{ min_date }} ~ {{ max_date }})</small></legend>
+{% endblock %}
+
+{% block value_prev %}
+<input type="hidden" name="type1" value="mentee"/>
+<input type="hidden" name="type2" value="{{ type2 }}"/>
+<input type="hidden" name="year" value="{{ prev_max_date.year }}"/>
+<input type="hidden" name="month" value="{{ prev_max_date.month }}"/>
+{% endblock %}
+
+{% block value_next %}
+<input type="hidden" name="type1" value="mentee"/>
+<input type="hidden" name="type2" value="{{ type2 }}"/>
+<input type="hidden" name="year" value="{{ next_max_date.year }}"/>
+<input type="hidden" name="month" value="{{ next_max_date.month }}"/>
+{% endblock %}
+
+{% block value_move %}
+<input type="hidden" name="type1" value="mentee"/>
+<input type="hidden" name="type2" value="{{ type2 }}"/>
+{% endblock %}
+
+{% block content_document_list %}
+<div class="row-fluid">
+	<div class="span12">
+		<section class="widget">
+			<header>
+				<h4><i class="icon-home"></i> {{ max_date.month }}월 멘티 멘토링현황</h4>
+			</header>
+			<div id="chartdiv_mentee" style="width:100%; height:{{ mentee_info_list|length|multiply:50|add:200 }}px; margin-top: -30px;">
+
+			</div>
+		</section>
+	</div>
+	<div class="span7">
+
+	</div>
+</div>
+<table id="mentor" class="table table-bordered table-condensed table-hover" >
+	<thead>
+	<tr>
+		<td>멘티명</td>
+		<td>프로젝트명</td>
+		<td>멘토링 횟수</td>
+		<td>멘토링 실제 시간</td>
+		<td>멘토링 인정 시간</td>
+		<td>멘토링 날짜</td>
+		<td>비고</td>
+	</tr>
+	</thead>
+
+	{% for mentee_info in mentee_info_list %}
+		{% for project_info in mentee_info.project_info_list %}
+			<tr>
+				<td>
+					<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+						<input type="hidden" name="type1" value="mentee"/>
+						<input type="hidden" name="type2" value="{{ type2 }}"/>
+						<input type="hidden" name="mentee" value="{{ mentee_info.mentee.username }}"/>
+						<input type="hidden" name="year" value="{{ max_date.year }}"/>
+						<input type="hidden" name="month" value="{{ max_date.month }}"/>
+						<input type="submit" value="{{ mentee_info.mentee.last_name }}{{ mentee_info.mentee.first_name }}" class="text_button"/>
+					</form>
+				</td>
+				<td>{{ project_info.project.title }}</td>
+				<td>{{ project_info.mentoringreports.count }}</td>
+				<td>{{ project_info.project_real_time }}</td>
+				<td>{{ project_info.project_accept_time }}</td>
+				<td style="text-align:left; padding-left: 5px;">
+					{% for mentoring_report in project_info.mentoringreports.all %}
+						{{ mentoring_report.date|date:"m/d" }}
+						{% if forloop.counter != project_info.mentoringreports.count %},{% endif %}
+					{% endfor %}
+				</td>
+				<td>
+					{% if project_info.project.is_finished == True %}종료 프로젝트{% endif %}
+				</td>
+			</tr>
+
+		{% endfor %}
+	
+	{% endfor %}
+</table>
+{% endblock %}
+
+{% block after_script %}
+<script src="{% static 'js/amcharts/amcharts.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/pie.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/amcharts/serial.js' %}" type="text/javascript"></script>
+<script type = "text/javascript">
+var chart1;
+var chart2;
+var legend1;
+var legend2;
+
+// Mentor Data
+var chartData_mentee = [
+{% for mentee_info in mentee_info_list %}
+	{% for project_info in mentee_info.project_info_list %}
+	{
+		"name": "{{ mentee_info.mentee.last_name }}{{ mentee_info.mentee.first_name }}",
+		"counts": {{ project_info.mentoringreports.count }},
+		"project": "{{ project_info.project.title }}",
+	},
+	{% endfor %}
+{% endfor %}
+]
+
+AmCharts.ready(function () {
+	chart1 = new AmCharts.AmSerialChart();
+	chart1.dataProvider = chartData_mentee;
+    chart1.categoryField = "name";
+    chart1.rotate = true;
+    chart1.color = "#FFFFFF";
+
+    chart1.autoMargins = false;
+    chart1.marginTop = 100;
+    chart1.marginLeft = 50;
+    chart1.marginRight = 30;
+    chart1.marginBottom = 50;
+    chart1.startDuration = 0.6;
+    chart1.startEffect = "<";
+
+    var categoryAxis = chart1.categoryAxis;
+    // categoryAxis.gridAlpha = 1;
+    categoryAxis.axisAlpha = 1;
+    // categoryAxis.autoGridCount = false;
+    // categoryAxis.labelRotation = 90;
+    // categoryAxis.gridPosition = "start";
+    // categoryAxis.inside = true;
+    // categoryAxis.labelsEnabled = false;
+
+    // value
+    var valueAxis = new AmCharts.ValueAxis();
+    valueAxis.gridAlpha = 0;
+    valueAxis.axisAlpha = 1;
+    // valueAxis.labelsEnabled = false;
+    valueAxis.minimum = 0;
+    chart1.addValueAxis(valueAxis);
+
+    // GRAPH
+    var graph = new AmCharts.AmGraph();
+    graph.balloonText = "[[category]]([[project]]): [[value]]";
+    graph.valueField = "counts";
+    graph.type = "column";
+    graph.lineAlpha = 0;
+    graph.fillAlphas = 0.5;
+    // you can pass any number of colors in array to create more fancy gradients
+    graph.fillColors = ["#367caa", "#333333"];
+    graph.gradientOrientation = "horizontal";
+    // graph.labelPosition = "bottom";
+    graph.labelText = "[[value]]번";
+    // graph.backgroundlloonText = "[[category]]: [[value]] Litres";
+    chart1.addGraph(graph);
+
+    // LABEL
+    // chart1.addLabel(50, 40, "Beer Consumption by country", "left", 15, "#000000", 0, 1, true);
+    chart1.write('chartdiv_mentee')
+});
+</script>
+{% endblock %}

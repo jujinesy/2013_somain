@@ -1,0 +1,91 @@
+{% extends 'manager/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- 현재 선택된 sidebar 메뉴일 경우 active -->
+{% block sidebar_group_notice_class %}active{% endblock %}
+
+<!-- 
+    아래 두 목록이 
+    toggle은 collapsed, collapse는 공백 : 접혀진상태
+    toggle은 공백, collapse는 in : 펴진 상태
+-->
+{% block sidebar_toggle_notice_class %}{% endblock %}
+{% block sidebar_collapse_notice_class %}in{% endblock %}
+
+<!-- li클래스 active여부. 검은색으로 좀 더 진하게 표시됨 -->
+{% block sidebar_li_notice_list_class %}
+{% if active_li == 'list' %}active{% endif %}
+{% endblock %}
+
+{% block sidebar_li_notice_add_class %}
+{% if active_li == 'add' %}active{% endif %}
+{% endblock %}
+
+{% block sidebar_li_notice_category_list_class %}
+{% if active_li == 'category_list' %}active{% endif %}
+{% endblock %}
+
+{% block sidebar_li_notice_category_add_class %}
+{% if active_li == 'category_add' %}active{% endif %}
+{% endblock %}
+
+
+{% block head %}
+{% endblock %}
+{% block content %}
+
+
+<div class="content container-fluid">
+	<section class="widget">
+		<div>
+			{% block content_notice %}
+			{% endblock %}
+		</div>
+	</section>
+</div>
+
+{% endblock %}
+
+
+{% block bottom_script %}
+<!-- jquery and friends -->
+<script src="{% static 'js/jquery/jquery.js' %}"></script>
+
+<!-- jquery plugins -->
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.datatable.js' %}"></script>
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-pageable.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid-paginator.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tab.js' %}"></script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<!-- page-specific js -->
+<script src="{% static 'js/admin/tables-dynamic.js' %}"></script>
+<script src="{% static 'js/forms-elemets.js' %}"></script>
+{% endblock %}
+
+{% block after_script %}
+{% endblock %}

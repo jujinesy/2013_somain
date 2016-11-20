@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}제출한 멘토링 보고서{% endblock %}
+{% block page_title %}제출한 멘토링 보고서{% endblock %}
+{% block page_subtitle %}참가한 프로젝트별로 보고서를 분류하여 보여줍니다.{% endblock %}
+
+{% block content %}
+<div class="container">
+	{% for project in projects %}
+	<div class="row-fluid section">
+		<legend class="no-border center">{{ project.title }}</legend>
+		<table class="table w80 btn-depend">
+			<thead>
+				<tr>
+					<th width="15%">제출 현황</th>
+					<th>일시</th>
+					<th>장소</th>
+					<th>참여멘티</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			{% for report in project.mentoring_report_by_project.all %}
+				<tr>
+					<td>
+						<span class="btn btn-edge {% if report.is_complete == True %}{% else %}btn-inverse{% endif %}" style="font-size: 8pt">
+						{% if report.is_complete == True and report.is_submitted == False %}
+							작성 완료
+						{% elif report.is_submitted == True %}
+							제출 완료
+						{% else %}
+							서명 미완료
+						{% endif %}
+						</span>
+					</td>
+					<td>{{ report.date|date:'Y-m-d' }}</td>
+					<td>{{ report.place }}</td>
+					<td>{% for mentee in report.mentees.all %}
+						{{ mentee.last_name }}{{ mentee.first_name }}{% if forloop.counter != report.mentees.all.count %},{% endif %}
+						{% endfor %}</td>
+					<td>
+						<a href="{% url 'document:mentoring_report_view' report.id %}" class="btn btn-edge btn-dark">보기</a>
+						<a class="btn btn-edge btn-dark">수정</a>
+					</td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	{% endfor %}
+
+	<div class="row-fluid">
+		<a href="{% url 'document:index' %}" class="float-right"><i class="icon-chevron-left"></i> 온라인 서류제출 메인 페이지로 가기</a>
+	</div>
+</div>
+{% endblock %}

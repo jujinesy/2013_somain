@@ -1,0 +1,8 @@
+{% extends 'manager/notice/base.html' %}
+
+{% block content_notice %}
+<legend>{{ notice.title }} <small> {{ notice.created|date:'Y-m-d' }}</small></legend>
+<div>
+	{{ notice.content }}
+</div>
+{% endblock %}

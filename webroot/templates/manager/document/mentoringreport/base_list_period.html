@@ -1,0 +1,15 @@
+{% extends 'manager/document/mentoringreport/base.html' %}
+
+{% block content_document %}
+<div style="text-align:center;">{% block content_document_title %}{% endblock %}</div>
+<div style="text-align:right; margin-bottom: 5px;">
+	<form action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+		<input type="hidden" name="type1" value="{{ type1 }}"/>
+		<input type="hidden" name="type2" value="period"/>
+		<input type="submit" class="btn btn-inverse" value="재검색"/>
+	</form>
+</div>
+
+{% block content_document_list %}
+{% endblock %}
+{% endblock %}

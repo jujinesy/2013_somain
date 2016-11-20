@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<legend>공지사항 추가</legend>
+<form class="form-horizontal" method="post">{% csrf_token %}
+	{% for field in form %}
+	<div class="control-group">
+        <label class="control-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+	    <div class="controls">
+			{{ field }}
+	    </div>
+    </div>
+	{% endfor %}
+	<div class="span10 offset2">
+	<input type="submit" class="btn btn-medium btn-orange" value="작성완료"/>
+		</div>
+</form>
+{% endblock %}
+
+{% block bottom %}
+<script src="{% static 'js/ckeditor/ckeditor.js' %}"></script>
+<script src="{% static 'js/ckeditor/adapters/jquery.js' %}"></script>
+<script>
+$('#{{ form.content.id_for_label }}').ckeditor({
+	enterMode : CKEDITOR.ENTER_BR,
+	shiftEnterMode: CKEDITOR.ENTER_P
+});
+</script>
+{% endblock %}

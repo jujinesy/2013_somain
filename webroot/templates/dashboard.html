@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="span6">
+				<legend>공지사항</legend>
+				<div>
+					{% for item in notice %}
+					<div class="notice_item">
+						<span class="">{{ item.created|date:'Y/m/d' }}</span>
+						<span class="delimiter">|</span>
+						<span class="category">{{ item.category.title }}</span>
+						<div class="title"><a href="{% url 'notice:detail' item.id %}">{{ item.title|truncatechars:40 }}</a></div>
+						<span class="right"><a href="{% url 'notice:detail' item.id %}"><i class="icon-angle-right"></i></a></span>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="span5 offset1">
+				<table class="table">
+					<caption class="right">서명해야할 서류</caption>
+					<thead>
+						<tr>
+							<th width="30%">기한</th>
+							<th width="50%">타입</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for doc in req_sign_docs %}
+						<tr>
+							<td>{{ doc.deadline|date:'m/d H:i' }}</td>
+							<td>{{ doc.doc_title }}</td>
+							<td class="right" style="font-size:1.2em">
+								<a href="{% url 'document:view' doc.id %}"><i class="icon-angle-right"></i></a>
+							</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+
+				<table class="table">
+					<caption class="right">강의실 예약현황</caption>
+					<thead>
+						<tr>
+							<th width="30%">일시</th>
+							<th width="40%">강의실</th>
+							<th>예약자명</th>
+						</tr>
+					</thead>
+					<tbody>
+					{% for lecture in lectures %}
+						<tr>
+							<td>{{ lecture.start|date:'Y-m-d' }}</td>
+							<td>{{ lecture.room.name }}</td>
+							<td>{{ lecture.admin }}</td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+{% endblock %}

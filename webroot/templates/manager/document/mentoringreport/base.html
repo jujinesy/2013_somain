@@ -1,0 +1,88 @@
+{% extends 'manager/document/base.html' %}
+{% block content_top %}
+<div class="row-fluid">
+	<legend>멘토링 보고서</legend>
+</div>
+<div class="row-fluid">
+	<!-- <span class="span4" style="text-align: left;">
+		<legend class="section">대쉬보드</legend>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="total"/>
+			<input type="hidden" name="type2" value="monthly"/>
+			<button type="submit" class="btn btn-small btn-info">월별(1~31)</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="total"/>
+			<input type="hidden" name="type2" value="monthly2"/>
+			<button type="submit" class="btn btn-small btn-info">월별(21~20)</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="total"/>
+			<input type="hidden" name="type2" value="step"/>
+			<button type="submit" class="btn btn-small btn-info">단계별</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="total"/>
+			<input type="hidden" name="type2" value="full"/>
+			<button type="submit" class="btn btn-small btn-info">기간별</button>
+		</form>
+	</span> -->
+	<span class="span6" style="text-align: left;">
+		<legend class="section">구분 기준</legend>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="total"/>
+			<input type="hidden" name="type2" value="{% block type2_total %}monthly{% endblock %}"/>
+			<button type="submit" class="btn btn-small {% if type1 == 'total' %}btn-danger{% else %}btn-primary{% endif %}">전체 통계</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="mentor"/>
+			<input type="hidden" name="type2" value="{% block type2_mentor %}monthly{% endblock %}"/>
+			<button type="submit" class="btn btn-small {% if type1 == 'mentor' %}btn-danger{% else %}btn-primary{% endif %}">멘토별 통계</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="mentee"/>
+			<input type="hidden" name="type2" value="{% block type2_mentee %}monthly{% endblock %}"/>
+			<button type="submit" class="btn btn-small {% if type1 == 'mentee' %}btn-danger{% else %}btn-primary{% endif %}">멘티별 통계</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="project"/>
+			<input type="hidden" name="type2" value="{% block type2_project %}monthly{% endblock %}"/>
+			<button type="submit" class="btn btn-small {% if type1 == 'project' %}btn-danger{% else %}btn-primary{% endif %}">프로젝트별 통계</button>
+		</form>
+	</span>
+	<span class="span6" style="text-align: left;">
+		<legend class="section">2차 구분 기준</legend>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="{{ type1 }}"/>
+			<input type="hidden" name="type2" value="monthly"/>
+			{% block monthly %}
+			{% endblock %}
+			<button type="submit" class="btn btn-small {% if type2 == 'monthly' %}btn-danger{% else %}btn-success{% endif %}">월별(1~31)</button>
+		</form>
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="{{ type1 }}"/>
+			<input type="hidden" name="type2" value="monthly2"/>
+			{% block monthly2 %}
+			{% endblock %}
+			<button type="submit" class="btn btn-small {% if type2 == 'monthly2' %}btn-danger{% else %}btn-success{% endif %}">월별(21~20)</button>
+		</form>
+		<!--<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}-->
+			<!--<input type="hidden" name="type1" value="{{ type1 }}"/>-->
+			<!--<input type="hidden" name="type2" value="step"/>-->
+			<!--{% block step %}-->
+			<!--{% endblock %}-->
+			<!--<button type="submit" class="btn btn-small {% if type2 == 'step' %}btn-danger{% else %}btn-success{% endif %}">단계별</button>-->
+		<!--</form>-->
+		<form class="manager-form-button" action="{% url 'manager:document_mentoringreport' %}" method="post">{% csrf_token %}
+			<input type="hidden" name="type1" value="{{ type1 }}"/>
+			<input type="hidden" name="type2" value="period"/>
+			{% block period %}
+			{% endblock %}
+			<button type="submit" class="btn btn-small {% if type2 == 'period' %}btn-danger{% else %}btn-success{% endif %}">기간별</button>
+		</form>
+	</span>
+	<br/>
+
+</div>
+<br/>
+{% endblock %}

@@ -1,0 +1,167 @@
+{% extends 'registration/base.html' %}
+{% block title %}강의실 차단(사용불가) 룰 추가{% endblock %}
+{% load staticfiles %}
+
+{% block style %}
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui-dtpicker.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="content container-fluid">
+	<div class="row-fluid">
+		<div class="span8 offset2">
+			<h2 class="page-title">강의실 차단 룰 추가</h2>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span8 offset2">
+			<section class="widget">
+				<div class="body">
+					<form id="validation-form" class="form-horizontal label-left" novalidate="novalidate" method="POST" enctype="multipart/form-data" data-validate="parsley" onsubmit="return confirm('규칙을 추가하시겠습니까?')">
+						{% csrf_token %}
+						<fieldset>
+							<legend class="section"><i class="icon-circle-blank"></i> 차단할 강의실 선택</legend>
+							<select name="rooms[]" multiple size="8">
+								{% for room in rooms %}
+								<option value="{{ room.id }}">{{ room.name }}</option>	
+								{% endfor %}
+							</select>
+							<div>여러 강의실을 선택할 수 있습니다. (Ctrl)</div>
+							<span class="help-inline"></span>
+						</fieldset>
+						<fieldset>
+							<legend class="section"><i class="icon-circle-blank"></i> 기간 설정</legend>
+							
+							<div class="datepair">
+								<input type="text" id="start_date" name="start_date" readonly>
+								<input type="text" id="end_date" name="end_date" readonly>
+							</div>
+						</fieldset>
+						<fieldset>
+							<legend class="section"><i class="icon-circle-blank"></i> 제목/사유 입력</legend>
+							<div class="control-group">
+								<label for="" class="control-label">
+									차단 명칭
+								</label>
+								<div class="controls controls-row">
+									<input type="text" name="name" id="cid">
+									<span class="help-inline"></span>
+								</div>
+							</div><div class="control-group">
+								<label for="" class="control-label">
+									차단 사유
+								</label>
+								<div class="controls controls-row">
+									<textarea name="content" id="content" cols="30" rows="5"></textarea>
+									<span class="help-inline"></span>
+								</div>
+							</div>
+						</fieldset>
+						<div class="form-actions">
+							<button type="submit" class="btn btn-primary span9">규칙 추가</button>
+						</div>
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block bottom_script %}
+<!-- jquery and friends -->
+<script src="{% static 'js/jquery/jquery.js' %}"></script>
+<script src="{% static 'js/jquery-ui/jquery-ui.js' %}"></script>
+<script src="{% static 'js/jquery-ui/jquery-ui-dtpicker.js' %}"></script>
+<script src="{% static 'js/moment/moment.js' %}"></script>
+
+<!-- jquery plugins -->
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.autogrow-textarea.js' %}"></script>
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+
+<!-- bootstrap custom plugins -->
+<!-- <script src="{% static 'js/bootstrap/bootstrap-datepicker.js' %}"></script> -->
+<script src="{% static 'js/bootstrap/bootstrap-select.js' %}"></script>
+
+
+<script src="{% static 'js/bootstrap/bootstrap-switch.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-colorpicker.js' %}"></script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<script>
+	var on_ready = function() {
+		var start_date = $('#start_date'), end_date = $('#end_date');
+
+		function convert_moment(text) {
+			return moment(text.replace('오전', 'AM').replace('오후', 'PM'), 'YYYY-MM-DD ahh:mm', 'ko');
+		}
+
+		function convert_string(mmt) {
+			return mmt.format("YYYY-MM-DD Ahh:mm").replace('AM', '오전').replace('PM', '오후');
+		}
+
+		// 30 분 단위로 min_date 생성
+		var t = 1000 * 60 * 30;
+		var min_date = new Date(Math.round(Date.now() / t) * t);
+
+		start_date.datetimepicker({
+			timeFormat: 'tthh:mm',
+			stepHour: 1,
+			stepMinute: 30,
+			controlType: 'select',
+			minDate: min_date,
+			onClose: function(dateText, inst) {
+				if (end_date.val() != '') {
+					var testStartDate = start_date.datetimepicker('getDate');
+					var testEndDate = end_date.datetimepicker('getDate');
+					if (testStartDate > testEndDate)
+						end_date.datetimepicker('setDate', testStartDate);
+				}
+			},
+			onSelect: function(selectedDateTime) {
+				end_date.datetimepicker('option', 'minDate', start_date.datetimepicker('getDate'));
+			}
+		});
+		end_date.datetimepicker({ 
+			timeFormat: 'tthh:mm',
+			stepHour: 1,
+			stepMinute: 30,
+			controlType: 'select',
+			minDate: min_date,
+			onClose: function(dateText, inst) {
+				if (start_date.val() != '') {
+					var testStartDate = start_date.datetimepicker('getDate');
+					var testEndDate = end_date.datetimepicker('getDate');
+					if (testStartDate > testEndDate)
+						start_date.datetimepicker('setDate', testEndDate);
+				}
+			},
+			onSelect: function(selectedDateTime) {
+			}
+		});
+	};
+
+	$(document).ready(on_ready);
+</script>
+{% endblock %}

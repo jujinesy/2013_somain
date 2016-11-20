@@ -1,0 +1,213 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>{% block title %}Soma Intranet{% endblock %}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- css -->
+	<link href="{% static 'css/bootstrap-orange.css' %}" rel="stylesheet">
+	<link href="{% static 'css/bootstrap-orange-responsive.css' %}" rel="stylesheet">
+	<link href="{% static 'css/fancybox/jquery.fancybox.css' %}" rel="stylesheet">
+	<link href="{% static 'css/jcarousel.css' %}" rel="stylesheet">
+	<link href="{% static 'css/flexslider.css' %}" rel="stylesheet">
+	<link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+	<!-- Theme skin -->
+	<link id="t-colors" href="{% static 'skins/default.css' %}" rel="stylesheet">
+	<!-- boxed bg -->
+	<link id="bodybg" href="{% static 'bodybg/bg1.css' %}" rel="stylesheet" type="text/css">
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="{% static 'ico/apple-touch-icon-144-precomposed.png' %}">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{% static 'ico/apple-touch-icon-114-precomposed.png' %}">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{% static 'ico/apple-touch-icon-72-precomposed.png' %}">
+	<link rel="apple-touch-icon-precomposed" href="{% static 'ico/apple-touch-icon-57-precomposed.png' %}">
+	<link rel="shortcut icon" href="{% static 'ico/favicon.png' %}">
+
+	{% block head %}
+	{% endblock %}
+</head>
+<body>
+	<div id="wrapper">
+		<!-- start hidden top -->
+		<div class="hidden-top">
+			<div class="hidden-top-inner container">
+				<div class="row">
+					<div class="span12">
+						<ul class="pull-right">
+							<li><strong>ID님은 관리자 유저입니다. </strong>관리자모드에 접속하실 수 있습니다.</li>
+							<li><a class="btn btn-large btn-dark btn-rounded" href="/admin">관리자 모드 바로가기</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- end hidden top -->
+		<!-- start header -->
+		<header>
+			<div class="container ">
+				<div id="header-hidden-link">
+					<a href="#" class="toggle-link closed" title="Click me you'll get a surprise" data-target=".hidden-top"><i></i>Open</a>
+				</div>
+				<div class="row nomargin">
+					<div class="span12">
+						<div class="headnav">
+							<ul>
+								{% block sign %}
+								{{ user.last_name }}{{ user.first_name }} 님 로그인 중 입니다 
+								<a href="{% url 'user:edit' %}"><i class="icon-wrench"></i> 개인정보 수정</a></li></a>&nbsp;&nbsp;&nbsp;
+								<a href="{% url 'user:logout' %}"><i class="icon-signout"></i> 로그아웃</a></li></a>
+								{% endblock %}
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="span3" style="margin-bottom: -10px;">
+						<div class="logo" style="width:100%; margin-top: -30px; margin-bottom: -10px;">
+							<a href="/"><img src="{% static 'img/logo.gif' %}" alt="" class="logo" /></a>
+						</div>
+						<!-- &nbsp;&nbsp;&nbsp;&nbsp;Intranet -->
+					</div>
+					<div class="span9">
+						<div class="navbar navbar-static-top">
+							<div class="navigation">
+								<nav>
+									<ul class="nav topnav">
+										{% block navbar %}
+										<li class="active">
+											<a href="index.html">Home <i class="icon-angle-right"></i></a>
+										</li>
+
+										<li class="">
+											<a href="{% url 'document:index' %}">온라인 서류제출 <i class="icon-folder-open-alt"></i></a>
+										</li>
+
+										<li class="">
+											<a href="{% url 'lecture:main' %}">강의실 예약</a>
+										</li>
+
+										<li class="dropdown">
+											<a href="#">알림마당 <i class="icon-angle-down"></i></a>
+											<ul class="dropdown-menu">
+												<li><a href="blog-left-sidebar.html">공지사항</a></li>
+												<li><a href="blog-right-sidebar.html">일정 안내</a></li>
+											</ul>
+										</li>
+
+										<li class="dropdown">
+											<a href="#">교육과정<i class="icon-angle-down"></i></a>
+											<ul class="dropdown-menu">
+												<li><a href="portfolio-2cols.html">교육과정 안내</a></li>
+												<li><a href="portfolio-3cols.html">집체교육 일정</a></li>
+												<li><a href="portfolio-3cols.html">수강신청 및 확인</a></li>
+											</ul>
+										</li>
+
+										<li class="dropdown">
+											<a href="#">멘토링 <i class="icon-angle-down"></i></a>
+											<ul class="dropdown-menu">
+												<li><a href="typography.html">멘토링 장소 예약</a></li>
+												<li><a href="table.html">멘토링 보고서 작성</a></li>
+												<li><a href="components.html">문서 결제</a></li>
+											</ul>
+										</li>
+										<li class="dropdown">
+											<a href="#">자료마당 <i class="icon-angle-down"></i></a>
+											<ul class="dropdown-menu">
+												<li><a href="typography.html">서식자료</a></li>
+												<li><a href="table.html">강의자료</a></li>
+											</ul>
+										</li>
+										{% endblock %}
+									</ul>
+								</nav>
+							</div>
+							<!-- end navigation -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<!-- end header -->
+
+		<div id="content" style="padding-bottom: 50px;">
+			<div class="container">
+			{% block content %}
+			{% endblock %}
+			</div>
+		</div>
+
+		<footer>
+			<div class="container">
+				<div class="row">
+					<div class="span9">
+						<div class="widget">
+							<h5 class="widgetheading">Soma Photostream</h5>
+							<div class="flickr_badge">
+								<script type="text/javascript" src="http://www.flickr.com/badge_code_v2.gne?count=10&amp;display=random&amp;size=s&amp;layout=x&amp;source=user&amp;user=34178660@N03"></script>
+							</div>
+							<div class="clear">
+							</div>
+						</div>
+					</div>
+					<div class="span3">
+						<div class="widget">
+							<h5 class="widgetheading">Contact</h5>
+							<address>
+								<strong>SW Maestro 과정 연수센터</strong><br>
+								서울 특별시 강남구 테헤란로<br>
+								아남타워 빌딩 2층, 7층 </address>
+								<p>
+									<i class="icon-phone"></i> (TEL) 02-6933-0701~0705<br>
+									<i class="icon-phone"></i> (FAX) 02-6933-0713<br>
+									<i class="icon-envelope-alt"></i> swmaestro@fkii.org
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div id="sub-footer">
+					<div class="container">
+						<div class="row">
+							<div class="span12">
+								<div class="copyright pull-right">
+									<p>
+										<span>&copy; SWMaestro 2013 All right reserved. Developed by</span><a href="#" target="_blank"> <strong>배권환</strong> | 김한울 | 이한영 | 한수훈</a>
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<a href="#" class="scrollup"><i class="icon-chevron-up icon-square icon-32 active"></i></a>
+		<script src="{% static 'js/jquery/jquery.js' %}"></script>
+		<script src="{% static 'orange/jquery.easing.1.3.js' %}"></script>
+		<script src="{% static 'orange/bootstrap.js' %}"></script>
+		<script src="{% static 'orange/jcarousel/jquery.jcarousel.min.js' %}"></script>
+		<script src="{% static 'orange/jquery.fancybox.pack.js' %}"></script>
+		<script src="{% static 'orange/jquery.fancybox-media.js' %}"></script>
+		<script src="{% static 'orange/google-code-prettify/prettify.js' %}"></script>
+		<script src="{% static 'orange/portfolio/jquery.quicksand.js' %}"></script>
+		<script src="{% static 'orange/portfolio/setting.js' %}"></script>
+		<script src="{% static 'orange/tweet/jquery.tweet.js' %}"></script>
+		<script src="{% static 'orange/jquery.flexslider.js' %}"></script>
+		<script src="{% static 'orange/jquery.nivo.slider.js' %}"></script>
+		<script src="{% static 'orange/modernizr.custom.79639.js' %}"></script>
+		<script src="{% static 'orange/jquery.ba-cond.min.js' %}"></script>
+		<script src="{% static 'orange/jquery.slitslider.js' %}"></script>
+		<script src="{% static 'orange/animate.js' %}"></script>
+		<script src="{% static 'orange/custom.js' %}"></script>
+		<script src="{% static 'orange/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'orange/scripts.js' %}"></script>
+		{% block bottom %}
+		{% endblock %}
+	</div>
+</body>
+</html>

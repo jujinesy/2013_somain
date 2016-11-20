@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>zipcode search test</title>
+</head>
+<body>
+	<form method="get" action="/korzip/search">
+		<input type="text" name="keyword"> <input type="submit" value="find">
+		<ul>
+		</ul>
+	</form>
+	<script src="http://code.jquery.com/jquery.min.js"></script>
+	<script>
+	+function($) {
+		$('form').submit(function() {
+			$.ajax({
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				success: function(data) {
+					if(!data.status) {
+						alert("검색 오류");
+						return;
+					}
+					if(data.count == 0) {
+						alert("결과가 없습니다.");
+						return;
+					} else {
+						$('form ul').html('');
+						for(var d in data.data) {
+							$('form ul').append(
+								"<li><strong>" + data.data[d].zipcode + "</strong> " + data.data[d].address + "</li>"
+								);
+						}
+					}
+				}
+			});
+
+			return false;
+		});
+	}(window.jQuery)
+	</script>
+</body>
+</html>

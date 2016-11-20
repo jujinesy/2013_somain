@@ -1,0 +1,84 @@
+{% extends 'manager/document/donationreceipt/base.html' %}
+{% load staticfiles %}
+{% block sidebar_li_donationreceipt_create_class %}active{% endblock %}
+
+{% block head2 %}
+<!--<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">-->
+<link rel="stylesheet" type="text/css" media="screen" href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+<style>
+.timepicker-hour,
+.timepicker-minute,
+.timepicker-second,
+.separator,
+.hour, .minute, .second{
+	color: black;
+}
+</style>
+{% endblock %}
+{% block title %}멘토링 보고서 작성{% endblock %}
+
+
+{% block content_document %}
+<div class="row-fluid">
+	<legend>기부금 영수증 작성 <small>&nbsp;&nbsp;모든 멘티들에게 해당 년/월의 기부금영수증 제출 문서가 생성됩니다</small></legend>
+	<br/>
+	<div class="span8 offset1">
+		<form class="form-horizontal label-left" novalidate="novalidate" method="POST" enctype="multipart/form-data" data-validate="parsley">{% csrf_token %}
+
+			<div class="control-group">
+				<label for="{{ form.deadline.id_for_label }}" class="control-label">
+					{{ form.deadline.label }}
+				</label>
+				<div id="datetimepicker" class="controls controls-row date">
+					{{ form.deadline }}
+					<span class="add-on">
+	                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                    </span>
+
+					<span class="help-inline">
+						{{ form.deadline.help_text }}
+						{{ form.deadline.errors }}
+					</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label for="{{ form.year.id_for_label }}" class="control-label">
+					{{ form.year.label }} / {{ form.month.label }}
+				</label>
+				<div class="controls controls-row">
+					{{ form.year }} {{ form.month }}
+					<span class="help-inline">
+						{{ form.year.help_text }} {{ form.month.help_text }}
+						{{ form.year.errors }} {{ form.month.erros }}
+					</span>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">
+				</label>
+				<div class="controls controls-row">
+					<input type="submit" class="btn btn-primary span6" value="작성 완료"/>
+				</div>
+			</div>
+
+
+		</form>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block bottom_script %}
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-BR.js"></script>
+<script type="text/javascript">
+  $('#datetimepicker').datetimepicker({
+    format: 'yyyy-MM-dd hh:mm:ss',
+    language: 'ko-KR'
+  });
+</script>
+{% endblock %}

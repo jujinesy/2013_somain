@@ -1,0 +1,45 @@
+<div style="width:100%;max-width:980px">
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed">
+<tr>
+	<td><img src="https://ssl.pstatic.net/static/pwe/mail/deskhome/ico_att_clip.gif" width="7" height="10" alt="">&nbsp;
+		<strong>첨부파일</strong>&nbsp;<span style="color:#38b601">{{ file_count }}개</span>({{ file_size }})</td>
+	<td align="right" style="font-size:11px;letter-spacing:-1px;color:#666">
+		첨부 파일은 <span style="letter-spacing:0;color:#ff3300;">30일간 보관</span>
+	</td></tr>
+	<td height="5" style="height:5px;font-size:0"></td>
+</tr>
+</table>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed">
+	<tr>
+		<td colspan="2" style="border:1px solid #ededee;border-bottom:0">
+			<table width="100%" height="100%" cellpadding="0" cellspacing="0" border="0" style="border-bottom:1px solid #ededee;table-layout:fixed">
+				{% for file in files %}
+				<tr>
+					<td valign="middle" align="right" width="20" style="width:20px">
+						<a href="{{ file.down_url }}">
+							<img src="https://ssl.pstatic.net/static/pwe/nm/btn_savepc.png" width="17" height="17" alt="PC로 저장" border="0" style="vertical-align:top" >
+						</a>
+					</td>
+					<td width="*" style="width: auto; line-height: 17px; padding: 3px 7px">
+						<a href="{{ file.down_url }}" title="{{ file.filename }}" style="color: #333; font-size: 12px; display: block; text-overflow: ellipsis; white-space: nowrap; width: 100%; overflow: hidden; text-decoration:none">
+							{{ file.filename }} <span style="font-family:tahoma;font-size:11px;color:#999;">{{ file.strfsize }}</span></a>
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" height="26" style="font-size:11px;letter-spacing:-1px;">
+			&nbsp;&nbsp;다운로드 기간 : <span style="letter-spacing:0;color:#ff3300">{{ file_expires }}</span>
+		</td>
+	</tr>
+</table>
+	<table width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed">
+	<tr><td height="7"></td></tr>
+	<tr><td height="1" bgcolor="#ececec" style="background-color: #ececec; height: 1px; width: 100%"></td></tr>
+	<tr><td height="20"></td></tr>
+	</table>
+</table>
+</div>

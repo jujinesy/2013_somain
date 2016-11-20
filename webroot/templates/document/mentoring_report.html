@@ -1,0 +1,481 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script type="text/javascript">
+var win=null;
+function printIt(print_body)  {
+	win = window.open();
+	self.focus();
+	win.document.open();
+	win.document.write('<'+'html'+'><'+'head'+'><'+'style'+'>');
+	win.document.write('body, td { font-family: Verdana; font-size: 10pt;}');
+	win.document.write('<'+'/'+'style'+'><'+'/'+'head'+'><'+'body'+'>');
+	win.document.write(print_body);
+	win.document.write('<'+'/'+'body'+'><'+'/'+'html'+'>');
+	win.document.close();
+	win.print();
+	win.close();
+}
+</script>
+<style>
+a:hover { text-decoration: none }
+a[data-link="back"] { color: #F03C02 }
+a {
+	color: #666666;
+}
+</style>
+{% endblock %}
+{% block page_title %}멘토링 보고서 확인{% endblock %}
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<a href="{% url 'document:mentoring_report_list' %}" data-link="back"><i class="icon-chevron-left"></i> 전체 프로젝트 목록으로 가기</a>
+	</div>
+	<div class="row">
+		<legend class="indent">{{ project }}</legend>
+	</div>
+	<div class="row">
+		<div class="span4">
+			{% for report in reports %}
+			<div class="row-fluid item">
+				<span class="span4">
+					<span class="span12 btn btn-edge btn-{% if report.is_complete == True and report.is_submitted == False %}success{% elif report.is_submitted == True %}blue{% else %}danger{% endif %}" style="font-size: 8pt; ">
+						{% if report.is_complete == True and report.is_submitted == False %}
+							작성 완료
+						{% elif report.is_submitted == True %}
+							제출 완료
+						{% else %}
+							서명 미완료
+						{% endif %}
+					</span>
+				</span>
+				<div class="span8">
+					{% if report == cur_report %}<u><big>{% endif %}
+					<strong>
+						<a href="{% url 'document:mentoring_report_view' report.id %}">
+							{{ report.date }}, {{ report.place }}
+						</a>
+					</strong><br/>
+					{% if report == cur_report %}</u></big>{% endif %}
+					<small>
+						&nbsp;&nbsp;&nbsp;
+						참여멘티 : 
+						{% for mentee in report.mentees.all %}
+						{{ mentee.last_name }}{{ mentee.first_name }}{% if forloop.counter != report.mentees.all.count %},{% endif %}
+						{% endfor %}
+					</small>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="span8">
+			<div style="padding-left: 30px; margin-bottom: -50px;" >
+				<a class="btn btn-edge btn-info" href="javascript:printIt(document.getElementById('print_body').innerHTML)">인쇄하기</a>
+				{% if cur_report.is_complete == False %}
+					<a class="btn btn-edge btn-orange" href="{% url 'document:sign' cur_report.id %}">서명하기</a>
+				{% elif cur_report.is_complete == True and cur_report.is_submitted == False %}
+					<a class="btn btn-edge btn-success" href="{% url 'document:submit' cur_report.id %}">제출하기</a>
+				{% elif cur_report.is_submitted == True %}
+					<span class="btn btn-edge btn-blue">제출완료</span>
+				{% endif %}
+				<p>
+
+			</div>
+			<div id="print_body" style="border-left:solid #cccccc 1px; margin-left: -2px; padding-left: 30px;">
+				<STYLE>
+				<!--
+				P.HStyle0, LI.HStyle0, DIV.HStyle0
+				{style-name:"바탕글"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle1, LI.HStyle1, DIV.HStyle1
+				{style-name:"본문"; margin-left:15.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle2, LI.HStyle2, DIV.HStyle2
+				{style-name:"개요 1"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle3, LI.HStyle3, DIV.HStyle3
+				{style-name:"개요 2"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle4, LI.HStyle4, DIV.HStyle4
+				{style-name:"개요 3"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle5, LI.HStyle5, DIV.HStyle5
+				{style-name:"개요 4"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle6, LI.HStyle6, DIV.HStyle6
+				{style-name:"개요 5"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle7, LI.HStyle7, DIV.HStyle7
+				{style-name:"개요 6"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle8, LI.HStyle8, DIV.HStyle8
+				{style-name:"개요 7"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle9, LI.HStyle9, DIV.HStyle9
+				{style-name:"쪽 번호"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle10, LI.HStyle10, DIV.HStyle10
+				{style-name:"머리말"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:150%; font-size:9.0pt; font-family:굴림; letter-spacing:0.2pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle11, LI.HStyle11, DIV.HStyle11
+				{style-name:"각주"; margin-left:13.1pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:-13.1pt; line-height:130%; font-size:9.0pt; font-family:바탕; letter-spacing:0.5pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle12, LI.HStyle12, DIV.HStyle12
+				{style-name:"xl64"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle13, LI.HStyle13, DIV.HStyle13
+				{style-name:"xl69"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle14, LI.HStyle14, DIV.HStyle14
+				{style-name:"xl79"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle15, LI.HStyle15, DIV.HStyle15
+				{style-name:"xl77"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle16, LI.HStyle16, DIV.HStyle16
+				{style-name:"xl70"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle17, LI.HStyle17, DIV.HStyle17
+				{style-name:"xl71"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle18, LI.HStyle18, DIV.HStyle18
+				{style-name:"xl76"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle19, LI.HStyle19, DIV.HStyle19
+				{style-name:"xl72"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle20, LI.HStyle20, DIV.HStyle20
+				{style-name:"xl73"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle21, LI.HStyle21, DIV.HStyle21
+				{style-name:"xl82"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle22, LI.HStyle22, DIV.HStyle22
+				{style-name:"xl88"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle23, LI.HStyle23, DIV.HStyle23
+				{style-name:"xl87"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle24, LI.HStyle24, DIV.HStyle24
+				{style-name:"xl83"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle25, LI.HStyle25, DIV.HStyle25
+				{style-name:"xl90"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle26, LI.HStyle26, DIV.HStyle26
+				{style-name:"xl84"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle27, LI.HStyle27, DIV.HStyle27
+				{style-name:"xl81"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle28, LI.HStyle28, DIV.HStyle28
+				{style-name:"xl92"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle29, LI.HStyle29, DIV.HStyle29
+				{style-name:"xl85"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle30, LI.HStyle30, DIV.HStyle30
+				{style-name:"xl93"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle31, LI.HStyle31, DIV.HStyle31
+				{style-name:"네모"; margin-left:25.0pt; margin-right:0.0pt; margin-top:11.3pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:14.0pt; font-family:휴먼명조; letter-spacing:0.7pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle32, LI.HStyle32, DIV.HStyle32
+				{style-name:"MS바탕글"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle33, LI.HStyle33, DIV.HStyle33
+				{style-name:"xl68"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle34, LI.HStyle34, DIV.HStyle34
+				{style-name:"★ 1."; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:left; text-indent:0.0pt; line-height:160%; font-size:16.0pt; font-family:-윤명조150; letter-spacing:0.8pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle35, LI.HStyle35, DIV.HStyle35
+				{style-name:"xl97"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:휴먼고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle36, LI.HStyle36, DIV.HStyle36
+				{style-name:"xl99"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:휴먼고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle37, LI.HStyle37, DIV.HStyle37
+				{style-name:"xl100"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:left; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:휴먼고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle38, LI.HStyle38, DIV.HStyle38
+				{style-name:"xl124"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:9.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle39, LI.HStyle39, DIV.HStyle39
+				{style-name:"xl126"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:9.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle40, LI.HStyle40, DIV.HStyle40
+				{style-name:"xl127"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:left; text-indent:0.0pt; line-height:160%; font-size:9.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle41, LI.HStyle41, DIV.HStyle41
+				{style-name:"xl75"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:22.0pt; font-family:HY헤드라인M; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle42, LI.HStyle42, DIV.HStyle42
+				{style-name:"xl67"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle43, LI.HStyle43, DIV.HStyle43
+				{style-name:"xl65"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle44, LI.HStyle44, DIV.HStyle44
+				{style-name:"xl66"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle45, LI.HStyle45, DIV.HStyle45
+				{style-name:"xl63"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:HY울릉도B; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle46, LI.HStyle46, DIV.HStyle46
+				{style-name:"xl74"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:HY울릉도B; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				-->
+				</STYLE>
+				<TABLE border="1" cellspacing="0" cellpadding="0" style='border-collapse:collapse;border:none;'>
+					<TR>
+						<TD colspan="13" width="641" height="61" valign="middle" style='border-left:none;border-right:none;border-top:none;border-bottom:none;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle41><SPAN STYLE='font-family:"맑은 고딕";'>멘토링보고서 ({{ month }}월)</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="78" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>구분</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>정규</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.type.title == '정규' %}O{% endif %}</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>자유</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.type.title == '자유' %}O{% endif %}</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>협업</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.type.title == '협업' %}O{% endif %}</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>기타</P>
+						</TD>
+						<TD width="73" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.type.title == '기타' %}O{% endif %}</P>
+						</TD>
+					</TR>
+				</TABLE>
+				<TABLE border="1" cellspacing="0" cellpadding="0" style='border-collapse:collapse;border:none;'>
+
+					<TR>
+						<TD colspan="13" width="641" height="18" valign="middle" bgcolor="#ffffff" style='border-left:none;border-right:none;border-top:none;border-bottom:none;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>　</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>프로젝트명</P>
+						</TD>
+						<TD colspan="7" width="255" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.project.title }}</P>
+						</TD>
+						<TD colspan="2" width="100" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>분과명</P>
+						</TD>
+						<TD colspan="3" width="194" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>기간</P>
+						</TD>
+						<TD colspan="7" width="255" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43></P>
+						</TD>
+						<TD colspan="2" width="100" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>기수</P>
+						</TD>
+						<TD colspan="3" width="194" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.project.course_term }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>지도멘토명</P>
+						</TD>
+						<TD colspan="6" width="214" height="22" valign="middle" style='border-left:none;border-right:none;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.project.mentor.last_name }}{{ cur_report.project.mentor.first_name }}</P>
+						</TD>
+						<TD width="41" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.project.mentor.sign_by_user.exists == True %}[서명]{% else %}(인){% endif %}</P>
+						</TD>
+						<TD colspan="2" width="100" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>단계</P>
+						</TD>
+						<TD colspan="3" width="194" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.project.course_step }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>협업멘토명</P>
+						</TD>
+						<TD colspan="6" width="214" height="22" valign="middle" style='border-left:none;border-right:none;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.copperation_mentor %}{{ cur_report.cooperation_mentor }}{% endif %}</P>
+						</TD>
+						<TD width="41" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>(인)</P>
+						</TD>
+						<TD colspan="2" width="100" height="22" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>분야</P>
+						</TD>
+						<TD colspan="3" width="194" height="22" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.project.type }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="13" width="641" height="18" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>　</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>NO.</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>연수생명</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>서명</P>
+						</TD>
+						<TD rowspan="5" colspan="2" width="54" height="124" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>강의</P>
+							<P CLASS=HStyle43>시간</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>회차</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ number }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.0 %}1{% endif %}</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.0 %}{{ cur_report.mentees.all.0.last_name }}{{ cur_report.mentees.all.0.first_name }}{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if user_info.user0.is_signed %}<img style="height: 25px;" src="{{ media_url }}{{ user_info.user0.sign.image }}"/>{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>날짜</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.date }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.1 %}2{% endif %}</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.1 %}{{ cur_report.mentees.all.1.last_name }}{{ cur_report.mentees.all.1.first_name }}{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if user_info.user1.is_signed %}<img style="height: 25px;" src="{{ media_url }}{{ user_info.user1.sign.image }}"/>{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>장소</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.place }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.2 %}3{% endif %}</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.2 %}{{ cur_report.mentees.all.2.last_name }}{{ cur_report.mentees.all.2.first_name }}{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if user_info.user2.is_signed %}<img style="height: 25px;" src="{{ media_url }}{{ user_info.user2.sign.image }}"/>{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>시작시간</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.start_time|time:"H:i" }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.3 %}4{% endif %}</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.3 %}{{ cur_report.mentees.all.3.last_name }}{{ cur_report.mentees.all.3.first_name }}{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if user_info.user3.is_signed %}<img style="height: 25px;" src="{{ media_url }}{{ user_info.user3.sign.image }}"/>{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>종료시간</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.end_time|time:"H:i" }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.4 %}5{% endif %}</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.4 %}{{ cur_report.mentees.all.4.last_name }}{{ cur_report.mentees.all.4.first_name }}{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if user_info.user4.is_signed %}<img style="height: 25px;" src="{{ media_url }}{{ user_info.user4.sign.image }}"/>{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="54" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 5.1pt 1.4pt 5.1pt'>
+							<P CLASS=HStyle43>&nbsp;</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>실제시간</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.real_time|time:"H:i" }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="92" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.5 %}6{% endif %}</P>
+						</TD>
+						<TD colspan="3" width="97" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if cur_report.mentees.all.5 %}{{ cur_report.mentees.all.5.last_name }}{{ cur_report.mentees.all.5.first_name }}{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="104" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{% if user_info.user5.is_signed %}<img style="height: 25px;" src="{{ media_url }}{{ user_info.user5.sign.image }}"/>{% endif %}</P>
+						</TD>
+						<TD colspan="2" width="54" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 5.1pt 1.4pt 5.1pt'>
+							<P CLASS=HStyle43>&nbsp;</P>
+						</TD>
+						<TD colspan="2" width="100" height="25" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>인정시간</P>
+						</TD>
+						<TD colspan="3" width="194" height="25" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle43>{{ cur_report.accept_time|time:"H:i" }}</P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="13" width="641" height="18" valign="middle" style='border-left:none;border-right:none;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle46><SPAN STYLE='font-family:"맑은 고딕";'>　</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD rowspan="3" width="92" height="394" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+							<P CLASS=HStyle12><SPAN STYLE='font-size:11.0pt;font-family:"맑은 고딕";line-height:160%;'>멘토링</SPAN>
+								<P CLASS=HStyle12><SPAN STYLE='font-size:11.0pt;font-family:"맑은 고딕";line-height:160%;'>내용</SPAN></P>
+							</TD>
+							<TD width="85" height="33" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>주제</SPAN></P>
+							</TD>
+							<TD colspan="11" width="464" height="33" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>{{ cur_report.title }}</SPAN></P>
+							</TD>
+						</TR>
+						<TR>
+							<TD width="85" height="284" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>내용</SPAN></P>
+							</TD>
+							<TD colspan="11" width="464" height="284" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>{{ cur_report.content }}</SPAN></P>
+							</TD>
+						</TR>
+						<TR>
+							<TD width="85" height="77" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>멘토의견</SPAN></P>
+							</TD>
+							<TD colspan="11" width="464" height="77" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>{{ cur_report.opinion }}</SPAN></P>
+							</TD>
+						</TR>
+						<TR>
+							<TD width="92" height="34" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle19 STYLE='text-align:center;'><SPAN STYLE='font-family:"맑은 고딕";'>다음 일정</SPAN></P>
+							</TD>
+							<TD colspan="12" width="549" height="34" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>{{ cur_report.schedule }}</SPAN></P>
+							</TD>
+						</TR>
+						<TR>
+							<TD width="92" height="73" valign="middle" bgcolor="#f2f2f2" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:none;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle19 STYLE='text-align:center;'><SPAN STYLE='font-family:"맑은 고딕";'>특이사항</SPAN></P>
+							</TD>
+							<TD colspan="12" width="549" height="73" valign="middle" style='border-left:none;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:0.0pt 0.0pt 0.0pt 0.0pt'>
+								<P CLASS=HStyle45><SPAN STYLE='font-family:"맑은 고딕";'>{{ cur_report.issue }}</SPAN></P>
+							</TD>
+						</TR>
+					</TR>
+				</TABLE>
+				<br/>
+			</div>
+		</div>
+		
+	</div>
+</div>
+{% endblock %}

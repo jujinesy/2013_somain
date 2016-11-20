@@ -1,0 +1,143 @@
+{% extends 'manager/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- 현재 선택된 sidebar 메뉴일 경우 active -->
+{% block sidebar_group_lecture_class %}active{% endblock %}
+
+<!-- 
+    아래 두 목록이 
+    toggle은 collapsed, collapse는 공백 : 접혀진상태
+    toggle은 공백, collapse는 in : 펴진 상태
+-->
+{% block sidebar_toggle_user_class %}{% endblock %}
+{% block sidebar_lecture_collapse_class %}in{% endblock %}
+
+<!-- li클래스 active여부. 검은색으로 좀 더 진하게 표시됨 -->
+{% block sidebar_li_lectureroom_class %}active{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="content container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 class="page-title">{{ title }}    <small>{{ subtitle }}</small></h2>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12 offset0">
+			<section class="widget">
+				<header>
+					<h4>
+					</h4>
+				</header>
+				<div class="body">
+					{% if alert %}
+					<div class="alert alert-{{ alert_type }}">
+						{{ alert }}
+					</diV>
+					{% endif %}
+					<table id="datatable-table" class="table table-striped">
+						<thead>
+							<tr>
+								<th>순번</th>
+								<th>강의실 이름</th>
+								<th class="no-sort"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for room in rooms %}
+							<tr>
+								<td>{{ forloop.counter }}</td>
+								<td><span contenteditable="true" data-id="{{ room.id }}" data-origin="{{ room.name }}">{{ room.name }}</span></td>
+								<td><a href="./list?room={{ room.id }}">예약현황보기</a> <a href="javascript:(function(){ if(confirm('강의실을 삭제하시겠습니까?')) { $('#room_id').val({{ room.id }}); document.room_remove.submit() } })()">삭제</a></td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				
+					<form method="post" action="{% url 'manager:lectureroom' %}">
+						{% csrf_token %}
+						<input type="hidden" name="type" value="new">
+						<input type="text" name="room_name">
+						<input type="submit" value="강의실 추가" class="btn">
+					</form>
+
+					<form method="post" action="{% url 'manager:lectureroom_remove' %}" name="room_remove">
+						{% csrf_token %}
+						<input type="hidden" id="room_id" name="room_id">
+					</form>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block bottom_script %}
+<!-- jquery and friends -->
+<script src="{% static 'js/jquery/jquery.js' %}"> </script>
+
+<!-- jquery plugins -->
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"> </script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.datatable.js' %}"></script>
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-pageable.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid-paginator.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tab.js' %}"></script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<!-- page-specific js -->
+<script src="{% static 'js/admin/tables-dynamic.js' %}"></script>
+<script src="{% static 'js/forms-elemets.js' %}"></script>
+
+<script>
+	$('#datatable-table tbody span[contenteditable]').keypress(function(e) {
+		if(e.which == 13) {
+			e.preventDefault();
+
+			if($(this).text().length > 0 && $(this).data('origin') != $(this).text()) {
+				$.ajax({
+					type: 'POST',
+					url: '{% url 'manager:lectureroom' %}',
+					data: { type: 'edit', id: $(this).data('id'), new_name: $(this).text() },
+					success: function(result) {
+						if(result.result) {
+							alert('강의실 이름이 수정되었습니다.');
+							$(this).data('origin', $(this).text());
+						}
+					}
+				});
+			}
+		}
+
+		return e.which != 13 && $(this).text().length <= 50;
+	});
+</script>
+{% endblock %}

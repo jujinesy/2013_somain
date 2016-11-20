@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head %}
+	<link href="{% static 'css/calendar.orign.css' %}" rel="stylesheet">
+	<link href="{% static 'css/powertip.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block page_title %}강의실 예약{% endblock %}
+{% block page_subtitle %}강의실 예약목록을 확인합니다.{% endblock %}
+
+{% block content %}
+	<div class="container">
+		<div class="page-header" style="border-bottom: 0">
+			<div class="row-fluid">
+				<div class="span12">
+					<div class="text-right">
+						<a href="{% url 'lecture:new' %}" class="btn btn-dark" onclick="window.open(this.href, '_blank', 'width=350, height=550, toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no');return false">강의실 예약하기</a>
+						<a href="{% url 'lecture:mylist' %}" class="btn btn-dark" onclick="window.open(this.href, '_blank', 'width=350, height=550, toolbar=no, location=no, status=no, menubar=no, scrollbars=yes, resizable=no');return false">내 예약목록</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="pull-right form-inline">
+				<button class="btn btn-dark" data-calendar-view="month">월별 보기</button>
+			</div>
+			<button class="calendar-btn" data-calendar-nav="prev"><i class="icon-angle-left"></i> 이전</button>
+			<h3></h3>
+			<button class="calendar-btn" data-calendar-nav="next">다음 <i class="icon-angle-right"></i></button>
+		</div>
+
+		<div class="row-fluid">
+			<div class="span9">
+				<div id="calendar"></div>
+			</div>
+			<div class="span3">
+				<div class="event_div">
+					<table id="eventlist" class="event_table">
+						<thead>
+							<tr>
+								<th>일시</th>
+								<th>시간</th>
+								<th>강의실</th>
+								<th>예약자명</th>
+							</tr>
+						</thead>
+						<tbody></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div id="calendar"></div>
+	</div>
+</div>
+{% endblock %}
+
+{% block bottom %}
+<!-- jquery plugins -->
+<script src="{% static 'js/moment/moment.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"> </script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.datatable.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.powertip.min.js' %}"></script>
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-pageable.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid-paginator.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tab.js' %}"></script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<!-- page-specific js -->
+<script src="{% static 'js/admin/tables-dynamic.js' %}"></script>
+<!-- <script src="{% static 'js/forms-elemets.js' %}"></script> -->
+<script src="{% static 'js/admin/underscore-min.js' %}"></script>
+<script src="{% static 'js/calendar/calendar.min.js' %}"></script>
+<script src="{% static 'tpl/calendar/language/ko-KR.js' %}"></script>
+<script src="{% static 'js/calendar/calendar.app.js' %}"></script>
+{% endblock %}

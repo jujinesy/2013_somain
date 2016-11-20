@@ -1,0 +1,123 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppBaseTheme" parent="android:Theme.Light">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
+    <style name="loginLeftLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">35</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
+    <style name="loginRightLayout">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">65</item>
+        <item name="android:layout_height">35dp</item>
+    </style>
+
+    <!-- Main -->
+    <style name="mainProfileRowLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:weightSum">100</item>
+    </style>
+
+    <style name="mainProfileLeftTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">35</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFFFFFFF</item>
+    </style>
+
+    <style name="mainProfileCenterLineView">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FF000000</item>
+    </style>
+
+    <style name="mainProfileRightTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">65</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#FFCCCCCC</item>
+    </style>
+    
+    <!-- Document -->
+    <style name="documentRowLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:weightSum">100</item>
+    </style>
+
+    <style name="documentLeftTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">35</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">#FF595757</item>
+    </style>
+
+    <style name="documentCenterLineView">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FF000000</item>
+    </style>
+
+    <style name="documentRightTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">75</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textSize">11dp</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+    
+    <!-- Notice -->
+    <style name="noticeRowLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:weightSum">100</item>
+    </style>
+
+    <style name="noticeLeftTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">25</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:textColor">#FF595757</item>
+    </style>
+
+    <style name="noticeCenterLineView">
+        <item name="android:layout_width">1px</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">#FF000000</item>
+    </style>
+
+    <style name="noticeRightTextView">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">75</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textSize">12dp</item>
+        <item name="android:textColor">#FF000000</item>
+    </style>
+
+</resources>

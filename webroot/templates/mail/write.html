@@ -1,0 +1,103 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>메일 보내기</title>
+	<link rel="stylesheet" href="{% static 'css/metro/modern.css' %}">
+	<style>
+	div.page-region-content { margin: 10px; }
+	div.mail-recv-list { }
+	div.mail-recv-list span { margin: 2px; }
+	div.m_10 { margin-bottom: 10px; }
+
+	input[type="text"] { width: 80% !important; }
+
+	#attachment { list-style: none !important; }
+	</style>
+</head>
+<body class="metrouicss">
+	<div class="page">
+		<div class="nav-bar">
+			<div class="nav-bar-inner">
+				<span class="element">메일 작성</span>
+				<span class="divider"></span>
+				<ul class="menu">
+					<li><a href="javascript:void(1)" data-button="submit"><i class="icon-upload-3"></i>보내기</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="page-region">
+			<div class="page-region-content">
+				<form id="mail" method="post" action="" enctype="multipart/form-data">
+					<input type="hidden" name="type" value="write">
+					{% csrf_token %}
+					{{ form.mail_to }}
+					<div class="input-control">
+						{{ form.title }}
+					</div>
+					<div class="input-control">수신자 목록</div>
+					<div class="input-control text mail-recv-list">
+                        {% for user in users %}
+                        <span class="label info">{{ user.username }}({{ user.email }})</span>
+                        {% endfor %}
+					</div>
+					<div class="m_10">
+						<textarea name="{{ form.content.name }}" id="{{ form.content.id_for_label }}" cols="30" rows="10">
+							あいうえお
+							abcde
+							가나다라마
+						</textarea>
+					</div>
+					<div class="input-control">
+						첨부파일 등록
+					</div>
+					<div>
+						<ul id="attachment">
+							<li><input type="file" name="file[]"></li>
+						</ul>
+						<button type="button" class="btn" id="new_attachment"><i class="icon-plus"></i>추가</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+	<script src="{% static 'js/jquery/jquery.js' %}"></script>
+	<script src="{% static 'js/jquery/jquery.mousewheel.js' %}"></script>
+	<script src="{% static 'js/metro/metro.min.js' %}"></script>
+	<script src="{% static 'js/ckeditor/ckeditor.js' %}"></script>
+	<script src="{% static 'js/ckeditor/adapters/jquery.js' %}"></script>
+	<script>
+	$(document).ready(function() {
+		$('#{{ form.content.id_for_label }}').ckeditor({
+			enterMode : CKEDITOR.ENTER_BR,
+			shiftEnterMode: CKEDITOR.ENTER_P
+		});
+
+		var mail_form = $('#mail');
+
+		mail_form.submit(function() {
+			if($('#{{ form.title.id_for_label }}').val() == '') {
+				alert('메일 제목을 입력해주세요.');
+				$('#{{ form.title.id_for_label }}').focus();
+				return false;
+			} else if($('#{{ form.content.id_for_label }}').val() == '') {
+				alert('메일 내용을 입력해주세요.');
+				$('#{{ form.content.id_for_label }}').focus();
+				return false;
+			}
+		});
+
+		$('a[data-button="submit"]').click(function() {
+			mail_form.submit();
+		});
+
+		var attachment = $('#attachment');
+		$('#new_attachment').click(function() {
+			attachment.append('<li><input type="file" name="file[]"></li>');
+		});
+	});
+	</script>
+</body>
+</html>

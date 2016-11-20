@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+
+{% block page_title %}공지사항{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block head %}
+<style>
+th {
+	color: #595757;
+	text-align: center;
+	font-size: 8pt;
+}
+td {
+	font-size: 9pt;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="span10 offset1">
+<table class="table w80" style="margin-top: 50px">
+	<thead>
+		<tr>
+			<th style="text-align: center;">날짜</th>
+			<th style="text-align: center;">카테고리</th>
+			<th style="text-align: center;">제목</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for notice in notices %}
+		<tr>
+			<td style="text-align: center;">{{ notice.created|date:"Y-m-d" }}</td>
+			<td style="text-align: center;">{{ notice.category.title }}</td>
+			<td>
+				<a href="{% url 'notice:detail' notice.id %}">
+					{{ notice.title }}
+					<span class="float-right"><i class="icon-angle-right"></i></span>
+				</a>
+			</td>
+		</tr>
+		{% endfor %}
+
+	</tbody>
+</table>
+</div>
+{% endblock %}

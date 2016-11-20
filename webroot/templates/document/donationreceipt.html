@@ -1,0 +1,470 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<script type="text/javascript">
+var win=null;
+function printIt(print_bo{{ cur_receipt.year }})  {
+	win = window.open();
+	self.focus();
+	win.document.open();
+	win.document.write('<'+'html'+'><'+'head'+'><'+'style'+'>');
+	win.document.write('bo{{ cur_receipt.year }}, td { font-family: Verdana; font-size: 10pt;}');
+	win.document.write('<'+'/'+'style'+'><'+'/'+'head'+'><'+'bo{{ cur_receipt.year }}'+'>');
+	win.document.write(print_bo{{ cur_receipt.year }});
+	win.document.write('<'+'/'+'bo{{ cur_receipt.year }}'+'><'+'/'+'html'+'>');
+	win.document.close();
+	win.print();
+	win.close();
+}
+</script>
+<style>
+a {
+	color: #666666;
+}
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container">
+	<div class="row">
+		<legend><a href="" class="btn btn-orange"><i class="icon-chevron-left"></i>전체 프로젝트 목록으로</a> &nbsp;&nbsp;&nbsp;제출한 멘토링보고서 목록 <small>{{ project }}</small></legend>
+	</div>
+	<div class="row">
+		<div class="span4">
+			{% for receipt in receipts %}
+			<div class="row-fluid item">
+				<span class="span4">
+					<span class="span12 btn btn-{% if receipt.is_complete == True and receipt.is_submitted == False %}success{% elif receipt.is_submitted == True %}blue{% else %}danger{% endif %}" style="font-size: 8pt; ">
+						{% if receipt.is_complete == True and receipt.is_submitted == False %}
+							작성 완료
+						{% elif receipt.is_submitted == True %}
+							제출 완료
+						{% else %}
+							서명 미완료
+						{% endif %}
+					</span>
+				</span>
+				<div class="span8">
+					{% if receipt == cur_receipt %}<u><big>{% endif %}
+					<strong>
+						<a href="{% url 'document:donationreceipt_view' receipt.id %}">
+							기부금 영수증 ({{ receipt.year }} / {{ receipt.month }})
+						</a>
+					</strong><br/>
+					{% if receipt == cur_receipt %}</u></big>{% endif %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<div class="span8">
+			<div style="padding-left: 30px; margin-left: 10px; margin-bottom: -50px;" >
+				<a class="btn btn-info" href="javascript:printIt(document.getElementById('print_bo{{ cur_receipt.year }}').innerHTML)">인쇄하기</a>
+				{% if cur_receipt.is_complete == False %}
+					<a class="btn btn-orange" href="{% url 'document:sign' cur_receipt.id %}">서명하기</a>
+				{% elif cur_receipt.is_complete == True and cur_receipt.is_submitted == False %}
+					<a class="btn btn-success" href="{% url 'document:submit' cur_receipt.id %}">제출하기</a>
+				{% elif cur_receipt.is_submitted == True %}
+					<span class="btn btn-blue">제출완료</span>
+				{% endif %}
+				<p>
+
+			</div>
+			<div id="print_bo{{ cur_receipt.year }}" style="border-left:solid #cccccc 1px; margin-left: -2px; padding-left: 30px;">
+				<STYLE>
+				<!--
+				P.HStyle0, LI.HStyle0, DIV.HStyle0
+				{style-name:"바탕글"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle1, LI.HStyle1, DIV.HStyle1
+				{style-name:"본문"; margin-left:15.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle2, LI.HStyle2, DIV.HStyle2
+				{style-name:"개요 1"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle3, LI.HStyle3, DIV.HStyle3
+				{style-name:"개요 2"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle4, LI.HStyle4, DIV.HStyle4
+				{style-name:"개요 3"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle5, LI.HStyle5, DIV.HStyle5
+				{style-name:"개요 4"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle6, LI.HStyle6, DIV.HStyle6
+				{style-name:"개요 5"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle7, LI.HStyle7, DIV.HStyle7
+				{style-name:"개요 6"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle8, LI.HStyle8, DIV.HStyle8
+				{style-name:"개요 7"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:바탕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle9, LI.HStyle9, DIV.HStyle9
+				{style-name:"쪽 번호"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle10, LI.HStyle10, DIV.HStyle10
+				{style-name:"머리말"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:150%; font-size:9.0pt; font-family:굴림; letter-spacing:0.2pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle11, LI.HStyle11, DIV.HStyle11
+				{style-name:"각주"; margin-left:13.1pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:-13.1pt; line-height:130%; font-size:9.0pt; font-family:바탕; letter-spacing:0.5pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle12, LI.HStyle12, DIV.HStyle12
+				{style-name:"xl64"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle13, LI.HStyle13, DIV.HStyle13
+				{style-name:"xl69"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle14, LI.HStyle14, DIV.HStyle14
+				{style-name:"xl79"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle15, LI.HStyle15, DIV.HStyle15
+				{style-name:"xl77"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle16, LI.HStyle16, DIV.HStyle16
+				{style-name:"xl70"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle17, LI.HStyle17, DIV.HStyle17
+				{style-name:"xl71"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle18, LI.HStyle18, DIV.HStyle18
+				{style-name:"xl76"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle19, LI.HStyle19, DIV.HStyle19
+				{style-name:"xl72"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle20, LI.HStyle20, DIV.HStyle20
+				{style-name:"xl73"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle21, LI.HStyle21, DIV.HStyle21
+				{style-name:"xl82"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle22, LI.HStyle22, DIV.HStyle22
+				{style-name:"xl88"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle23, LI.HStyle23, DIV.HStyle23
+				{style-name:"xl87"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle24, LI.HStyle24, DIV.HStyle24
+				{style-name:"xl83"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle25, LI.HStyle25, DIV.HStyle25
+				{style-name:"xl90"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle26, LI.HStyle26, DIV.HStyle26
+				{style-name:"xl84"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle27, LI.HStyle27, DIV.HStyle27
+				{style-name:"xl81"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle28, LI.HStyle28, DIV.HStyle28
+				{style-name:"xl92"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle29, LI.HStyle29, DIV.HStyle29
+				{style-name:"xl85"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle30, LI.HStyle30, DIV.HStyle30
+				{style-name:"xl93"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:굴림; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle31, LI.HStyle31, DIV.HStyle31
+				{style-name:"네모"; margin-left:25.0pt; margin-right:0.0pt; margin-top:11.3pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:14.0pt; font-family:휴먼명조; letter-spacing:0.7pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle32, LI.HStyle32, DIV.HStyle32
+				{style-name:"MS바탕글"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle33, LI.HStyle33, DIV.HStyle33
+				{style-name:"xl68"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle34, LI.HStyle34, DIV.HStyle34
+				{style-name:"★ 1."; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:left; text-indent:0.0pt; line-height:160%; font-size:16.0pt; font-family:-윤명조150; letter-spacing:0.8pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle35, LI.HStyle35, DIV.HStyle35
+				{style-name:"xl97"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:휴먼고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle36, LI.HStyle36, DIV.HStyle36
+				{style-name:"xl99"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:휴먼고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle37, LI.HStyle37, DIV.HStyle37
+				{style-name:"xl100"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:left; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:휴먼고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle38, LI.HStyle38, DIV.HStyle38
+				{style-name:"xl124"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:9.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle39, LI.HStyle39, DIV.HStyle39
+				{style-name:"xl126"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:9.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle40, LI.HStyle40, DIV.HStyle40
+				{style-name:"xl127"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:left; text-indent:0.0pt; line-height:160%; font-size:9.0pt; font-family:돋움; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle41, LI.HStyle41, DIV.HStyle41
+				{style-name:"xl75"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:22.0pt; font-family:HY헤드라인M; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle42, LI.HStyle42, DIV.HStyle42
+				{style-name:"xl67"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle43, LI.HStyle43, DIV.HStyle43
+				{style-name:"xl65"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:10.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle44, LI.HStyle44, DIV.HStyle44
+				{style-name:"xl66"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:justify; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:맑은 고딕; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle45, LI.HStyle45, DIV.HStyle45
+				{style-name:"xl63"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:HY울릉도B; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				P.HStyle46, LI.HStyle46, DIV.HStyle46
+				{style-name:"xl74"; margin-left:0.0pt; margin-right:0.0pt; margin-top:0.0pt; margin-bottom:0.0pt; text-align:center; text-indent:0.0pt; line-height:160%; font-size:11.0pt; font-family:HY울릉도B; letter-spacing:0.0pt; font-weight:"normal"; font-style:"normal"; color:#000000;}
+				-->
+				</STYLE>
+				<TABLE border="1" cellspacing="0" cellpadding="0" style='border-collapse:collapse;border:none;'>
+					<TR>
+						<TD colspan="10" width="636" height="52" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle27><SPAN STYLE='font-size:14.0pt;font-family:"한양중고딕,한컴돋움";font-weight:"bold";line-height:150%;'>장 학 금(기 부 금) 영 수 증</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='line-height:130%;'><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";font-weight:"bold";line-height:130%;'>&nbsp;1. 수여자</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="2" width="105" height="36" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>법 인 명</SPAN></P>
+						</TD>
+						<TD colspan="2" width="105" height="36" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:8.0pt;line-height:130%;'>정보통신산업진흥원</SPAN></P>
+						</TD>
+						<TD colspan="3" width="148" height="36" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:140%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:140%;'>주민등록번호</SPAN></P>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:140%;'><SPAN STYLE='font-size:10.0pt;letter-spacing:1px;font-weight:"bold";line-height:140%;'>(사업자등록번호)</SPAN></P>
+						</TD>
+						<TD colspan="3" width="278" height="36" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>314-82-13453</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="2" width="105" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>주&nbsp;&nbsp;&nbsp; 소</SPAN></P>
+						</TD>
+						<TD colspan="8" width="531" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>대전광역시 유성구 유성대로 1548(화암동 58-4)</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='line-height:130%;'><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";font-weight:"bold";line-height:130%;'>&nbsp;2. 수여처</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="2" width="105" height="37" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>법 인 명</SPAN></P>
+						</TD>
+						<TD colspan="2" width="105" height="37" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>{{ cur_receipt.sign_users.all.0.last_name }}{{ cur_receipt.sign_users.all.0.first_name }}</SPAN></P>
+						</TD>
+						<TD colspan="3" width="148" height="37" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:150%;'>주민등록번호</SPAN></P>
+						<P CLASS=HStyle0 STYLE='text-align:center;'><SPAN STYLE='font-size:10.0pt;letter-spacing:0.1pt;font-weight:"bold";line-height:150%;'>(사업자등록번호)</SPAN></P>
+						</TD>
+						<TD colspan="3" width="278" height="37" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>{{ cur_receipt.sign_users.all.0.rr_number }}</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="2" width="105" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>소 재 지</SPAN></P>
+						</TD>
+						<TD colspan="8" width="531" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>{{ cur_receipt.sign_users.all.0.address }}</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="25" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='line-height:130%;'><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";font-weight:"bold";line-height:130%;'>&nbsp;3. 장학금 모집처(언론기관 등)</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="2" width="105" height="34" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>단 체 명</SPAN></P>
+						</TD>
+						<TD colspan="2" width="105" height="34" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>정보통신산업진흥원</SPAN></P>
+						</TD>
+						<TD colspan="3" width="148" height="34" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>사업자등록번호</SPAN></P>
+						</TD>
+						<TD colspan="3" width="278" height="34" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>314-82-13453</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="2" width="105" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>소 재 지</SPAN></P>
+						</TD>
+						<TD colspan="8" width="531" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>대전광역시 유성구 유성대로 1548(화암동 58-4)</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="31" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='line-height:130%;'><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";font-weight:"bold";line-height:130%;'>&nbsp;4. 수여내용</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD rowspan="2" width="86" height="42" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>유형</SPAN></P>
+						</TD>
+						<TD rowspan="2" colspan="2" width="94" height="42" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>코드</SPAN></P>
+						</TD>
+						<TD rowspan="2" colspan="2" width="98" height="42" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>연월일</SPAN></P>
+						</TD>
+						<TD colspan="4" width="215" height="21" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>기부금품</SPAN></P>
+						</TD>
+						<TD rowspan="2" width="144" height="42" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>금 액</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="68" height="21" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>품명</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="21" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>수량</SPAN></P>
+						</TD>
+						<TD width="68" height="21" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;font-weight:"bold";line-height:130%;'>단가</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="86" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>6</SPAN></P>
+						</TD>
+						<TD colspan="2" width="94" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>50</SPAN></P>
+						</TD>
+						<TD colspan="2" width="98" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>{{ cur_receipt.year }}. {{ cur_receipt.month }} </SPAN></P>
+						</TD>
+						<TD width="68" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>장학금</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="144" height="27" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>1,000,000</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="86" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="94" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="98" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="144" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="86" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="94" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="98" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="144" height="23" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="86" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="94" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="98" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="144" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="86" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="94" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="98" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="144" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD width="86" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="94" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="98" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD colspan="2" width="79" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="68" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+						<TD width="144" height="24" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="126" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='margin-left:5.0pt;margin-right:3.0pt;text-indent:-5.0pt;line-height:130%;'><SPAN STYLE='font-size:10.0pt;line-height:130%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[□｢법인세법｣ 제24조, □｢조세특례제한법｣ 제73조]에 따른 장학(기부)금을 위와 같이 수여하였음을 증명하여 주시기 바랍니다.</SPAN></P>
+						<P CLASS=HStyle0 STYLE='margin-right:3.0pt;line-height:90%;'><SPAN STYLE='font-size:10.0pt;line-height:90%;'>&nbsp;</SPAN></P>
+						<P CLASS=HStyle0 STYLE='margin-right:3.0pt;line-height:40%;'><SPAN STYLE='font-size:10.0pt;line-height:40%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cur_receipt.year }} 년&nbsp; {{ cur_receipt.month }}&nbsp; 월&nbsp; </SPAN></P>
+						<P CLASS=HStyle0 STYLE='margin-right:3.0pt;margin-top:22.7pt;text-align:right;line-height:90%;'><SPAN STYLE='font-size:10.0pt;line-height:90%;'>신청인 정보통신산업진흥원&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (서명 또는 인)</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="102" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='line-height:90%;'><SPAN STYLE='font-size:10.0pt;line-height:90%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;위와 같이 장학(기부)금을 수여하였음을 증명합니다.</SPAN></P>
+						<P CLASS=HStyle0 STYLE='text-align:center;line-height:90%;'><SPAN STYLE='font-size:10.0pt;line-height:90%;'>&nbsp;</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:40%;'><SPAN STYLE='font-size:10.0pt;line-height:40%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ cur_receipt.year }} 년&nbsp; {{ cur_receipt.month }}&nbsp; 월&nbsp; </SPAN></P>
+						<P CLASS=HStyle0 STYLE='margin-top:22.7pt;margin-bottom:8.5pt;text-align:right;line-height:90%;'><SPAN STYLE='font-size:10.0pt;line-height:90%;'>&nbsp;장학(기부)금 수령인&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ cur_receipt.sign_users.all.0 }}&nbsp;&nbsp;&nbsp; (&nbsp; {% if is_signed %}<img style="height: 20px;" src="{{ media_url }}{{ cur_sign.image }}{% endif %}"/>&nbsp; )</SPAN></P>
+						</TD>
+					</TR>
+					<TR>
+						<TD colspan="10" width="636" height="201" valign="middle" style='border-left:solid #000000 1px;border-right:solid #000000 1px;border-top:solid #000000 1px;border-bottom:solid #000000 1px;padding:1.4pt 1.4pt 1.4pt 1.4pt'>
+						<P CLASS=HStyle0 STYLE='line-height:140%;'><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";font-weight:"bold";line-height:140%;'> </SPAN><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";line-height:140%;'>※ 작성방법</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:40%;'><SPAN STYLE='font-size:11.0pt;font-family:"한양중고딕,한컴돋움";line-height:40%;'>&nbsp;</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:140%;'><SPAN STYLE='font-size:10.0pt;line-height:140%;'>&nbsp;&nbsp;&nbsp;1. 유형 및 코드는 다음 구분에 따라 기재합니다.</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:20%;'><SPAN STYLE='font-size:10.0pt;line-height:20%;'>&nbsp;</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:140%;'><SPAN STYLE='font-size:10.0pt;line-height:140%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;가. ｢법인세법｣ 제24조제2항에 따른 기부금(유형 1, 코드 10), </SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:140%;'><SPAN STYLE='font-size:10.0pt;line-height:140%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;나. ｢조세특례제한법｣제73조제1항에 따른 기부금(유형 2, 코드 30),</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:140%;'><SPAN STYLE='font-size:10.0pt;line-height:140%;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;다. ｢법인세법｣ 제24조제1항에 따른 기부금(유형 5, 코드 40), </SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:140%;'><SPAN STYLE='font-size:10.0pt;letter-spacing:-2.4pt;line-height:140%;'>&nbsp; </SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:0.3pt;line-height:140%;'>&nbsp;&nbsp;&nbsp;라.&nbsp; </SPAN><SPAN STYLE='font-size:10.0pt;line-height:140%;'>그 밖의 기부금 (유형 6, 코드 50)</SPAN></P>
+						<P CLASS=HStyle0 STYLE='line-height:60%;'><SPAN STYLE='font-size:10.0pt;letter-spacing:-4.0pt;line-height:60%;'>&nbsp; </SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:-1.3pt;line-height:60%;'> </SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:-1.6pt;line-height:60%;'>&nbsp;</SPAN></P>
+						<P CLASS=HStyle0 STYLE='margin-left:29.0pt;text-indent:-29.0pt;line-height:140%;'><SPAN STYLE='font-size:10.0pt;line-height:140%;'>&nbsp;&nbsp;&nbsp;2. </SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:0.6pt;line-height:140%;'>금전 외의 자산을 기부한 경우로서 가.․나.에 해당하는 경우에는 금액란에 해당 자산의 장부가액을</SPAN><SPAN STYLE='font-size:10.0pt;line-height:140%;'>, </SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:0.3pt;line-height:140%;'>다․라</SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:0.6pt;line-height:140%;'>에 해당하는 경우에는 해당 자산의 시가(시가가 장부가액보다 낮은 경우에는 장부가액)</SPAN><SPAN STYLE='font-size:10.0pt;letter-spacing:0.3pt;line-height:140%;'>를 기재</SPAN><SPAN STYLE='font-size:10.0pt;line-height:140%;'>하되, 장부가액 또는 시가가 확인되지 아니하는 경우에는 기재를 생략합니다.</SPAN></P>
+						</TD>
+					</TR>
+					</TABLE>
+				<br/>
+			</div>
+		</div>
+
+	</div>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block page_title %}공지사항{% endblock %}
+{% block page_subtitle %}{% endblock %}
+
+{% block content %}
+<table class="table w80 no-border" style="border-bottom: 1px solid #ADADAE">
+	<tbody>
+		<tr>
+			<td>카테고리</td>
+			<td class="left">{{ notice.category.title }}</td>
+		</tr>
+		<tr>
+			<td>날짜</td>
+			<td class="left">{{ notice.created|date:'Y-m-d' }}</td>
+		</tr>
+		<tr>
+			<td style="border-bottom: 1px solid #ADADAE">제목</td>
+			<td class="left" style="border-bottom: 1px solid #ADADAE">{{ notice.title }}</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="left" style="padding: 60px">
+				{{ notice.content|linebreaksbr }}
+			</td>
+		</tr>
+		<tr>
+			<td style="border-top: 1px solid #ADADAE">이전글</td>
+			<td class="left">{% if prev %}<a href="{% url 'notice:detail' prev.id %}">{{ prev.title }}</a>{% else %}이전글 없음{% endif %}</td>
+		</tr>
+		<tr>
+			<td width="15%">다음글</td>
+			<td class="left">{% if next %}<a href="{% url 'notice:detail' next.id %}">{{ next.title }}</a>{% else %}다음글 없음{% endif %}</td>
+		</tr>
+	</tbody>
+</table>
+{% endblock %}

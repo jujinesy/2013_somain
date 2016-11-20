@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %}멘토링 보고서 작성{% endblock %}
+{% block page_title %}멘토링 보고서 작성{% endblock %}
+{% block page_subtitle %}멘토링 보고서를 작성하실 수 있습니다.{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row-fluid">
+		<a href="javascript:history.go(-1)"><i class="icon-chevron-left"></i> 전체 보고서 목록으로 가기</a>
+	</div>
+	<div class="row-fluid">
+		<div class="span8 offset1">
+			<legend>{{ project.title }} 프로젝트 | {{ mentor.last_name }}{{ mentor.first_name }} 멘토</legend>
+		<form class="form-horizontal label-left" novalidate="novalidate" method="POST" enctype="multipart/form-data" data-validate="parsley">{% csrf_token %}
+
+			<input type="hidden" name="project_id" value="{{ project.id }}"/>
+			<input type="hidden" name="mentor_id" value="{{ mentor.id }}"/>
+			{% for field in form %}
+			<div class="control-group">
+				<label for="{{ field.id_for_label }}" class="control-label left">
+					{{ field.label }}
+				</label>
+				<div class="controls controls-row">
+					{{ field }}
+					<span class="help-inline">
+						{{ field.help_text }}
+						{{ field.errors }}
+					</span>
+				</div>
+			</div>
+			{% endfor %}
+
+			<div class="control-group">
+				<label class="control-label">
+				</label>
+				<div class="controls controls-row">
+					<input type="submit" class="btn btn-primary span6" value="작성 완료"/>
+				</div>
+			</div>
+			
+
+		</form>
+	</div>
+	</div>
+
+</div>
+{% endblock %}
+
+{% block bottom %}>
+{% endblock %}

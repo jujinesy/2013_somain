@@ -1,0 +1,76 @@
+{% load staticfiles %}
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>예약내용 확인 :: {{ title }}</title>
+
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.theme.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tuktuk/tuktuk.icons.css' %}">
+
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui.css' %}">
+	<link rel="stylesheet" href="{% static 'css/jquery-ui/jquery-ui-dtpicker.css' %}">
+	<style>
+		dl { margin: 0 }
+		dt {
+			float: left;
+			margin: 0;
+			padding: 2px 0;
+			width: 8em;
+			color: gray;
+			font-weight: normal;
+			clear: left;
+		}
+
+		dd {
+			margin: 0 0 0 8em;
+			padding: 2px 8px;
+			border-left: 1px solid silver;
+		}
+	</style>
+</head>
+<body data-tuktuk="boxes">
+	<section>
+		<header class="bck light">
+			<h3 class="on-left text thin">강의실 예약내용 확인</h3>
+		</header>
+		<article class="padding">
+			<dl>
+				<dt>예약명</dt>
+				<dd>{{ lecture.name }}</dd>
+				<dt>담당자</dt>
+				<dd>{{ lecture.admin|escape }}</dd>
+				<dt>담당자 연락처</dt>
+				<dd>{{ lecture.admin_tel }}</dd>
+				<dt>참석 인원</dt>
+				<dd>{{ lecture.count }}</dd>
+				<dt>비고</dt>
+				<dd>{{ lecture.message|escape|linebreaks }}&nbsp;</dd>
+				<dt>예약 시작</dt>
+				<dd>{{ lecture.start }}</dd>
+				<dt>예약 종료</dt>
+				<dd>{{ lecture.end }}</dd>
+				<dt>예약 강의실</dt>
+				<dd>{{ lecture.room.name|escape }}</dd>
+			</dl>
+		</article>
+
+		{% if user.is_staff or lecture.user == user %}
+		<article class="padding">
+			<form id="delete" method="post" action="{% url 'lecture:delete' %}" onclick="return confirm('예약을 취소하시겠습니까?')">
+				{% csrf_token %}
+				<input type="hidden" name="id" value="{{ lecture.id }}">
+				<button type="submit">삭제</button>
+			</form>
+		</article>
+		{% endif %}
+	</section>
+
+	<script src="{% static 'js/jquery/jquery.js' %}"></script>
+	<script src="{% static 'js/tuktuk/tuktuk.js' %}"></script>
+	<script src="{% static 'js/jquery-ui/jquery-ui.js' %}"></script>
+	<script src="{% static 'js/jquery-ui/jquery-ui-dtpicker.js' %}"></script>
+	<script src="{% static 'js/moment/moment.js' %}"></script>
+</body>
+</html>

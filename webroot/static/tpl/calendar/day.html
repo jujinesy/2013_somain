@@ -1,0 +1,63 @@
+<div class="daily_table">
+	<div class="table_row header">
+		<div class="title">강의실</div>
+	</div>
+	<div class="table_row sub_header">
+		<div class="title">&nbsp;</div>
+	</div>
+</div>
+<ul class="unstyled cal-event-list hide">
+	<% _.each(events, function(event) { %>
+		<li data-room-id="<%= event.room_id %>" data-room-name="<%= event.room_name %>" data-event-id="<%= event.id %>" data-event-title="<%= event.title %>" data-start="<%= event.start %>" data-end="<%= event.end %>">
+			<div><span style="font-weight: bold; font-size: 1.1em"><%= strftime('%H시 %M분', new Date(event.start)) + strftime(' ~ %H시 %M분', new Date(event.end)) %></span> <%= event.room_name %></div>
+			<a href="<%= event.url %>" data-event-id="<%= event.id %>" data-event-class="<%= event.class %>" class="event-item">
+			<%= event.title %>
+			</a>
+		</li>
+	<% }) %>
+</ul>
+
+<script>
+	var data = $('ul.cal-event-list li'), room = {}, tbody = $('div.daily_table'),
+		times = [], today = calendar.getStartDate();
+
+	for(var i = 0; i <= 24; i++) {
+		$('div.daily_table div.table_row.header').append('<div class="th">' + i + '</div>');
+		$('div.daily_table div.table_row.sub_header').append('<div class="delimiter' + ( i == 0 ? ' first' : '' ) + '"></div>');
+	}
+
+	data.each(function() {
+		if(!room[$(this).data('room-id')]) {
+			room[$(this).data('room-id')] = $(this).data('room-name');
+		}
+	});
+
+	for(var r in room) {
+		var tr = $(document.createElement('div')).attr('class', 'table_row table_content');
+
+		var d = {};
+		for(var i = 0; i <= 23; i++) {
+			$(data).each(function() {
+				var st = moment(parseInt($(this).data('start'))).hours(), ed = moment(parseInt($(this).data('end'))).hours();
+				if( i >= st && i < ed && $(this).data('room-id') == r ) {
+					d[i] = $(this);
+				}
+			});
+		}
+
+		tr.append('<div class="title">' + room[r] + '</div>');
+		tr.append('<div class="first"></div>');
+		for(var i = 0; i <= 23; i++) {
+			if(d.hasOwnProperty(i)) {
+				var title = i + '시: ' + d[i].data('event-title');
+				tr.append('<div data-id="' + d[i].data('event-id') + '" data-title="' + d[i].data('event-title') + '" title="' + title + '" class="block mark"></div>');
+			} else {
+				tr.append('<div class="block"></div>');
+			}
+		}
+
+		tbody.append(tr);
+	}
+
+	$('div.block.mark').powerTip({ smartPlacement: true });
+</script>

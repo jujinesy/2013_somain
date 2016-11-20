@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/main_back"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="15dp" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="HongikGuide"
+            android:textColor="#FFFFFFFF"
+            android:textSize="18dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/login_inputwindow_back"
+            android:orientation="vertical"
+            android:padding="15dp" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:weightSum="100" >
+
+                <TextView
+                    style="@style/loginLeftLayout"
+                    android:gravity="center"
+                    android:text="학번/아이디"
+                    android:textColor="#FF333333"
+                    android:textSize="13dp" />
+
+                <EditText
+                    
+                    android:id="@+id/etLoginId"
+                    style="@style/loginRightLayout"
+                    android:layout_height="32dp"
+                    android:background="@drawable/login_edittext_back"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:nextFocusDown="@+id/etLoginPw"
+                    android:textColor="#FF333333" >
+                    <requestFocus />
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="100" >
+
+                <TextView
+                    style="@style/loginLeftLayout"
+                    android:gravity="center"
+                    android:text="비밀번호"
+                    android:textColor="#FF333333"
+                    android:textSize="13dp" />
+
+                <EditText
+                    android:id="@+id/etLoginPw"
+                    style="@style/loginRightLayout"
+                    android:layout_height="32dp"
+                    android:background="@drawable/login_edittext_back"
+                    android:inputType="textPassword"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:textColor="#FF333333" >
+                </EditText>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center_vertical|right" >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/login_cb_autologin_back"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp" >
+
+                    <CheckBox
+                        android:id="@+id/cbLoginAuto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-2dp"
+                        android:layout_marginBottom="-2dp"
+                        android:textColor="#FFDDDDDD" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="자동로그인"
+                        android:textColor="#FFDDDDDD"
+                        android:textSize="11dp" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:id="@+id/btnLoginLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/login_btnlogin"
+                    android:text="로그인"
+                    android:textColor="#FFDDDDDD"
+                    android:textSize="11dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="클래스넷 아이디/비밀번호로 로그인하세요"
+            android:textColor="#FFDDDDDD"
+            android:textSize="12dp" />
+
+        <Button
+            android:id="@+id/btnLoginGuest"
+            android:layout_width="wrap_content"
+            android:layout_gravity="right"
+            android:layout_height="20dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:background="#00000000"
+            android:gravity="right"
+            android:text="Guest 계정으로 로그인"
+            
+            android:textColor="#FFAAAAAA"
+            android:textSize="13dp" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:padding="15dp"
+        android:text="by lhy"
+        android:textColor="#FFDDDDDD"
+        android:textSize="10dp" />
+
+</FrameLayout>

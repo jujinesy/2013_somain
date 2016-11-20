@@ -1,0 +1,219 @@
+{% extends 'manager/base.html' %}
+{% load staticfiles %}
+
+{% block title %}{{ title }}{% endblock %}
+
+<!-- 현재 선택된 sidebar 메뉴일 경우 active -->
+{% block sidebar_group_user_class %}active{% endblock %}
+
+<!-- 
+    아래 두 목록이 
+    toggle은 collapsed, collapse는 공백 : 접혀진상태
+    toggle은 공백, collapse는 in : 펴진 상태
+-->
+{% block sidebar_toggle_user_class %}{% endblock %}
+{% block sidebar_collapse_class %}in{% endblock %}
+
+<!-- li클래스 active여부. 검은색으로 좀 더 진하게 표시됨 -->
+{% block sidebar_li_user_all_class %}
+{% if active_li == 'all' %}active{% endif %}
+{% endblock %}
+{% block sidebar_li_user_approval_class %}
+{% if active_li == 'approval' %}active{% endif %}
+{% endblock %}
+{% block sidebar_li_user_wait_class %}
+{% if active_li == 'wait' %}active{% endif %}
+{% endblock %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+
+
+<div class="content container-fluid">
+	<div class="row-fluid">
+		<div class="span12">
+			<h2 class="page-title">{{ title }}    <small>{{ subtitle }}</small></h2>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12 offset0">
+			<section class="widget">
+				<header>
+					<h4>
+						<!-- <i class="icon-file-alt"></i>&nbsp;사용자 목록 -->
+					</h4>
+				</header>
+				<div class="body">
+					<!-- 체크된 사용자 목록을 전달하는 form -->
+					<form action="/admin/modify_userlist/" method="post">
+						{% csrf_token %}
+						<div class="row-fluid">
+							<div class="span4">
+								<span style="display: inline-block;">
+									<input class="btn btn-inverse" type="button" value="전체 선택" onClick="this.value=check(this.form.check_user_id)">
+								</span>
+								<a href="{% url 'registration_register' %}" class="btn btn-primary" target="_blank">새 사용자 추가</a>
+							</div>
+
+							<div class="span8">
+								<div style="float:right; margin-bottom: 10px;">
+									<select placeholder="선택한 사용자 권한 변경" id="modify_select" class="chzn-select" name="permission">
+										<option value=""></option>
+										<option value="approval">활성 사용자로 변경</option>
+										<option value="wait">승인 대기자로 변경</option>
+										<option value="mentee1">멘티 (1기)로 변경</option>
+										<option value="mentee2">멘티 (2기)로 변경</option>
+										<option value="mentee3">멘티 (3기)로 변경</option>
+										<option value="mentee4">멘티 (4기)로 변경</option>
+										<option value="mentor">멘토로 변경</option>
+									</select>
+									<select placeholder="선택한 사용자 단계 변경" id="modify_select" class="chzn-select" name="step">
+										<option value=""></option>
+										<option value="1st-1">1단계 - 1차로 변경</option>
+										<option value="1st-2">1단계 - 2차로 변경</option>
+										<option value="2nd">2단계로 변경</option>
+										<option value="3rd">3단계로 변경</option>
+										<option value="certificate">인증자로 변경</option>
+										<option value="giveup(1st-1)">포기자(1-1)로 변경</option>
+										<option value="giveup(1st-2)">포기자(1-2)로 변경</option>
+										<option value="giveup(2nd)">포기자(2단계)로 변경</option>
+										<option value="giveup(3rd)">포기자(3단계)로 변경</option>
+									</select>
+									<button type="submit" class="btn btn-inverse" value="Submit">변경</button>
+									<button type="button" class="btn btn-success" data-action="mail" value="Mail">메일발송</button>
+								</div>
+							</div>
+						</div>
+
+						<table id="datatable-table" class="table table-striped">
+							<thead>
+								<tr>
+									<th class="no-sort">선택</th>
+									<th class="no-sort hidden-phone-landscape">순번</th>
+									<th>타입</th>
+									<th class="no-sort hidden-phone-landscape">아이디</th>
+									<th>이름</th>
+									<th class="no-sort">이메일</th>
+									<th>나이</th>
+
+									<th class="no-sort hidden-phone-landscape">전화번호</th>
+									<th class="hidden-phone-landscape">생일</th>
+									<th class="hidden-phone-landscape">소속</th>
+								</tr>
+							</thead>
+
+
+							<tbody>
+								{% for user in users %}
+								<tr>
+									<td><input type="checkbox" class="uniform" name="check_user_id" value="{{ user.id }}"/></td>
+									<td>{{ forloop.counter }}</td>
+									<td>{{ user.get_type_display }}{% if user.get_type_display == '멘티' %} ({{ user.get_course_term_display }}) - {{ user.get_course_step_display }}{% endif %}</td>
+									<td><a href="{% url 'manager:user_profile' user.id %}" target="_blank"><strong>{{ user.username }}</strong></a></td>
+									<td>{{ user.last_name }}{{ user.first_name }}</td>
+									<td>{{ user.email }}</td>
+									<td>{{ user.age }}</td>
+									<td>{{ user.phone_number }}</td>
+									<td class="hidden-phone-landscape">{{ user.birthday }}
+									</td>
+									<td>{{ user.school }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</form>
+
+					<!-- Excel 변환을 위해 user.id 정보를 input type="hidden"으로 추가 -->
+					<div>
+						<form action="/admin/convert/" method="post">
+							{% csrf_token %}
+							{% for user in users %}
+							<input type="hidden" name="user_id" value="{{ user.id }}"/>
+							{% endfor %}
+							<button type="submit" class="btn btn-success">Convert to Excel</button>
+						</form>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block bottom_script %}
+<!-- jquery and friends -->
+<script src="{% static 'js/jquery/jquery.js' %}"> </script>
+
+<!-- jquery plugins -->
+<script src="{% static 'js/jquery/jquery.maskedinput.js' %}"></script>
+<script src="{% static 'js/parsley/parsley.js' %}"> </script>
+<script src="{% static 'js/jquery/jquery.uniform.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.select2.js' %}"></script>
+<script src="{% static 'js/jquery/jquery.datatable.js' %}"></script>
+
+<!--backbone and friends -->
+<script src="{% static 'js/backbone/underscore-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-min.js' %}"></script>
+<script src="{% static 'js/backbone/backbone-pageable.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid.js' %}"></script>
+<script src="{% static 'js/backgrid/backgrid-paginator.js' %}"></script>
+
+<!-- bootstrap default plugins -->
+<script src="{% static 'js/bootstrap/bootstrap-transition.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-collapse.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-alert.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tooltip.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-popover.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-button.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-dropdown.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-modal.js' %}"></script>
+<script src="{% static 'js/bootstrap/bootstrap-tab.js' %}"></script>
+
+<!-- basic application js-->
+<script src="{% static 'js/bootstrap/app.js' %}"></script>
+<script src="{% static 'js/bootstrap/settings.js' %}"></script>
+
+<!-- page-specific js -->
+<script src="{% static 'js/admin/tables-dynamic.js' %}"></script>
+<script src="{% static 'js/forms-elemets.js' %}"></script>
+
+
+<script type="text/javascript">
+var checkflag = "false";
+function check(field) {
+	if (checkflag == "false") {
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = true;
+		}
+		checkflag = "true";
+		return "선택 해제";
+	} else {
+		for (i = 0; i < field.length; i++) {
+			field[i].checked = false;
+		}
+		checkflag = "false";
+		return "전체 선택";
+	}
+}
+
+$(document).ready(function() {
+	$('button[data-action="mail"]').click(function() {
+		if($('#mail_form')) $('#mail_form').remove();
+
+		var list = $('input[name="check_user_id"]:checked'), selected = [];
+		for(var i = 0; i < list.length; i++) {
+			selected.push($(list[i]).val());
+		}
+
+		var mail = window.open('','mail','toolbar=0, scrollbars=0, location=0, statusbar=0, menubar=0, resizable=0, width=600, height=700');
+		var form = $('<form id="mail_form" method="post" action="/mail/write" target="mail">');
+		form.html("{% csrf_token %}<input type='hidden' name='to' value='" + selected.join(',') + "' />");
+		form.appendTo('body').submit();
+		mail.focus();
+	});
+});
+</script>
+{% endblock %}

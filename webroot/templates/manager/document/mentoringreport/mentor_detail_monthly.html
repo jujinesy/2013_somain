@@ -1,0 +1,113 @@
+{% extends 'manager/document/mentoringreport/base_detail_monthly.html' %}
+{% load staticfiles %}
+{% load custom_tag %}
+
+{% block monthly %}
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+{% endblock %}
+
+{% block monthly2 %}
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+{% endblock %}
+
+{% block step %}
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+{% endblock %}
+
+{% block period %}
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+{% endblock %}
+
+{% block content_document_title %}
+<legend>{{ mentor_info.mentor.last_name }}{{ mentor_info.mentor.first_name }} 멘토 ({{ max_date.year }}년 {{ max_date.month }}월) <small>{{ min_date }} ~ {{ max_date }}</small></legend>
+{% endblock %}
+
+{% block value_prev %}
+<input type="hidden" name="type1" value="mentor"/>
+<input type="hidden" name="type2" value="{{ type2 }}"/>
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+<input type="hidden" name="year" value="{{ prev_max_date.year }}"/>
+<input type="hidden" name="month" value="{{ prev_max_date.month }}"/>
+{% endblock %}
+
+{% block value_next %}
+<input type="hidden" name="type1" value="mentor"/>
+<input type="hidden" name="type2" value="{{ type2 }}"/>
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+<input type="hidden" name="year" value="{{ next_max_date.year }}"/>
+<input type="hidden" name="month" value="{{ next_max_date.month }}"/>
+{% endblock %}
+
+{% block value_move %}
+<input type="hidden" name="type1" value="mentor"/>
+<input type="hidden" name="type2" value="{{ type2 }}"/>
+<input type="hidden" name="mentor" value="{{ mentor_info.mentor.username }}"/>
+{% endblock %}
+
+{% block content_document_detail %}
+<br/>
+<table id="mentor" class="table table-bordered table-condensed table-hover" >
+	<thead>
+		<tr>
+			<td>멘토명</td>
+			<td>프로젝트명</td>
+			<td>멘토링 횟수</td>
+			<td>멘토링 실제 시간</td>
+			<td>멘토링 인정 시간</td>
+		</tr>
+	</thead>
+	{% for project_info in mentor_info.project_info_list %}
+		{% if project_info.mentoring_reports.count == 0 %}
+			<tr>
+
+				<td>{{ mentor_info.mentor.last_name }}{{ mentor_info.mentor.first_name }}</td>
+				<td>{{ project_info.project.title }}</td>
+				<td colspan='3'>결과 없음</td>
+			</tr>
+		{% else %}
+			<tr>
+				<td>{{ mentor_info.mentor.last_name }}{{ mentor_info.mentor.first_name }}</td>
+				<td>{{ project_info.project.title }}</td>
+				<td>{{ project_info.mentoringreports.count }}</td>
+				<td>{{ project_info.project_real_time }}</td>
+				<td>{{ project_info.project_accept_time }}</td>
+			</tr>
+		{% endif %}
+	{% endfor %}
+</table>
+
+{% for project_info in mentor_info.project_info_list %}
+<table id="mentor_monthly_detail_mentoring_report_table" class="table table-bordered table-condensed table-hover">
+	<thead>
+		<tr>
+			<td>순번</td>
+			<td>구분</td>
+			<td>날짜</td>
+			<td>장소</td>
+			<td>시작시간</td>
+			<td>종료시간</td>
+			<td>참여멘티</td>
+			<td>주제</td>
+		</tr>
+	</thead>
+		<h4>{{ project_info.project.title }} <small>({{ project_info.project.course_term }} {{ project_info.project.course_step }})</small></h4>
+		{% for mentoring_report in project_info.mentoringreports %}
+		<tr>
+			<td>{{ forloop.counter }}</td>
+			<td>{{ mentoring_report.type }}</td>
+			<td>{{ mentoring_report.date }}</td>
+			<td>{{ mentoring_report.place }}</td>
+			<td>{{ mentoring_report.start_time|time:"H:i" }}</td>
+			<td>{{ mentoring_report.end_time|time:"H:i" }}</td>
+			<td>
+				{% for mentee in mentoring_report.mentees.all %}
+					{{ mentee.last_name }}{{ mentee.first_name }}{% if forloop.counter != mentoring_report.mentees.all|length %},{% endif %}
+				{% endfor %}
+			</td>
+			<td>{{ mentoring_report.title }}</td>
+		</tr>
+		{% endfor %}
+</table>
+{% endfor %}
+
+{% endblock %}

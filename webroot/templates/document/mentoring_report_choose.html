@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}멘토링 보고서 작성{% endblock %}
+{% block page_title %}멘토링 보고서 작성{% endblock %}
+{% block page_subtitle %}멘토링 보고서를 작성하실 프로젝트를 선택해주세요.{% endblock %}
+
+{% block content %}
+<div class="container">
+	<div class="row-fluid">
+		<a href="{% url 'document:index' %}"><i class="icon-chevron-left"></i> 온라인 서류제출 메인 페이지로 가기</a>
+	</div>
+
+	<legend class="no-border no-margin w80">담당 프로젝트</legend>
+	<table class="table w80 btn-depend">
+		<thead>
+			<tr>
+				<th width="25%">프로젝트명</th>
+				<th>참여 멘티</th>
+				<th width="20%"></th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for project in manage_projects %}
+		<tr>
+			<td>{{ project.title }}</td>
+			<td>
+				{% for mentee in project.mentees.all %}
+					{{ mentee.last_name }}{{ mentee.first_name }}{% if forloop.counter != project.mentees.all.count %},{% endif %}
+				{% endfor %}
+			</td>
+			<td><a class="btn btn-dark btn-edge" href="{% url 'document:mentoring_report_write' project.id %}">작성하기</a></td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+	<br><br><br><br>
+	<legend class="no-border no-margin w80">전체 프로젝트</legend>
+	<table class="table w80 btn-depend">
+		<thead>
+			<tr>
+				<th width="25%">프로젝트명</th>
+				<th>참여 멘티</th>
+				<th width="20%"></th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for project in projects %}
+		<tr>
+			<td>{{ project.title }}</td>
+			<td>
+				{% for mentee in project.mentees.all %}
+					{{ mentee.last_name }}{{ mentee.first_name }}{% if forloop.counter != project.mentees.all.count %},{% endif %}
+				{% endfor %}
+			</td>
+			<td><a class="btn btn-dark btn-edge" href="{% url 'document:mentoring_report_write' project.id %}">작성하기</a></td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>
+{% endblock %}

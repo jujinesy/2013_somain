@@ -1,0 +1,291 @@
+{% load staticfiles %}
+{% include 'header.html' %}
+{% if edit == 1 %}
+<script>alert( "개인정보가 정상적으로 수정되었습니다." );</script>
+{% endif %}
+<section id="content">
+	<div class="container">
+		<div class="row">
+			<div class="span3">
+				<aside class="left-sidebar">
+					<div class="widget">
+						<h5 class="widgetheading">My Page</h5>
+						<ul class="cat">
+							<li><i class="icon-angle-right"></i><a href="#">개인정보 수정</a></li>
+							<li><i class="icon-angle-right"></i><a href="#">비밀번호 재설정</a></li>
+							<li><i class="icon-angle-right"></i><a href="#">로그아웃</a></li>
+						</ul>
+					</div>
+				</aside>
+			</div>
+			<div class="span9">
+				<ul class="breadcrumb">
+					<li><a href="#">Home</a> <span class="divider">/</span></li>
+					<li><a href="#">My Page</a> <span class="divider">/</span></li>
+					<li class="active">개인정보 수정</li>
+				</ul><br><br>
+				<h3>개인정보 수정</h3>
+				<form id="validation-form" class="form-horizontal label-left" novalidate="novalidate" method="POST" enctype="multipart/form-data" data-validate="parsley">
+					{% csrf_token %}
+					<fieldset>
+						<legend class="section"><i class="icon-circle-blank"></i>    기본 정보</legend>
+						<div class="control-group">
+							<label for="{{ form.username.id_for_label }}" class="control-label">
+								아이디
+							</label>
+							<div class="controls controls-row">
+								<label for="{{ form.username.id_for_label }}" class="control-label">
+									{{ user.username }}
+								</label>
+								<span class="help-inline">
+									{{ form.username.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.first_name.id_for_label }}" class="control-label">
+								성 / 이름
+							</label>
+							<div class="controls controls-row">
+								<label for="{{ form.username.id_for_label }}" class="control-label">
+									{{ user.first_name }} {{ user.last_name }}
+								</label>
+							</div>
+						</div>
+
+
+						<div class="control-group">
+							<label for="{{ form.email.id_for_label }}" class="control-label">
+								{{ form.email.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.email }}
+								<span class="help-inline">
+									{{ form.email.errors }}
+								</span>
+							</div>
+						</div>
+
+
+						<legend class="section"><i class="icon-circle-blank"></i>    신상 정보</legend>
+						<div class="control-group">
+							<label for="{{ form.age.id_for_label }}" class="control-label">
+								나이
+							</label>
+							<div class="controls controls-row">
+								<label for="{{ form.username.id_for_label }}" class="control-label">
+									{{ user.age }}
+								</label>
+							</div>
+						</div>
+
+
+
+						<div class="control-group">
+							<label class="control-label" for="{{ form.gender.id_for_label}}">
+								성별
+							</label>
+							<div class="controls">
+								<label for="{{ form.username.id_for_label }}" class="control-label">
+									{{ user.get_gender_display }}
+								</label>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.birthday.id_for_label }}" class="control-label">
+								생년월일
+							</label>
+							<div class="controls controls-row">
+								<label for="{{ form.username.id_for_label }}" class="control-label">
+									{{ user.birthday }}
+								</label>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.rr_number.id_for_label }}" class="control-label">
+								주민등록번호
+							</label>
+							<div class="controls controls-row">
+								<label for="{{ form.username.id_for_label }}" class="control-label">
+									{{ user.rr_number }}
+								</label>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.home_number.id_for_label }}" class="control-label">
+								{{ form.home_number.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.home_number }}
+								<span class="help-inline">
+									{{ form.home_number.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.phone_number.id_for_label }}" class="control-label">
+								{{ form.phone_number.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.phone_number }}
+								<span class="help-inline">
+									{{ form.phone_number.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.education_level.id_for_label }}" class="control-label">
+								{{ form.education_level.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.education_level }}
+								<span class="help-inline">
+									{{ form.education_level.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.military.id_for_label }}" class="control-label">
+								{{ form.military.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.military }}
+								<span class="help-inline">
+									{{ form.military.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.photo.id_for_label }}" class="control-label">
+								{{ form.photo.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.photo }}
+								<span class="help-inline">
+									{{ form.photo.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.school.id_for_label }}" class="control-label">
+								{{ form.school.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.school }}
+								<span class="help-inline">
+									{{ form.school.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.zipcode.id_for_label }}" class="control-label">
+								{{ form.zipcode.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.zipcode }}
+								<span class="help-inline">
+									{{ form.zipcode.errors }}
+								</span>
+								<input type="button" value="검색" onclick="find_zipcode()">
+							</div>
+						</div>
+						<div class="control-group">
+							<label for="{{ form.address1.id_for_label }}" class="control-label">
+								주소
+							</label>
+							<div class="controls controls-row">
+								{{ form.address1 }}
+								<span class="help-inline">
+									{{ form.address1.errors }}
+								</span>
+							</div>
+						</div>
+						<div class="control-group">
+							<label for="{{ form.address2.id_for_label }}" class="control-label">
+							</label>
+							<div class="controls controls-row">
+								{{ form.address2 }}
+								<span class="help-inline">
+									{{ form.address2.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div id="zip_search" class="control-group" style="display: none">
+							<label class="control-label">주소(동, 빌딩명) 입력</label>
+							<div class="controls controls-row">
+								<input type="text" id="zip_keyword" onkeydown="if(event.keyCode == 13) { find_zipcode(this.value); return false; }"> <input type="button" value="검색" onclick="find_zipcode($('#zip_keyword').val())">
+								<div style="height: 200px; overflow-y: scroll">
+									<ul id="zip_list"></ul>
+								</div>
+							</div>
+						</div>
+
+						<legend class="section"><i class="icon-circle-blank"></i>    선택 사항</legend>
+						<div class="control-group">
+							<label for="{{ form.google.id_for_label }}" class="control-label">
+								{{ form.google.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.google }}
+								<span class="help-inline">
+									{{ form.google.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.twitter.id_for_label }}" class="control-label">
+								{{ form.twitter.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.twitter }}
+								<span class="help-inline">
+									{{ form.twitter.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.facebook.id_for_label }}" class="control-label">
+								{{ form.facebook.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.facebook }}
+								<span class="help-inline">
+									{{ form.facebook.errors }}
+								</span>
+							</div>
+						</div>
+
+						<div class="control-group">
+							<label for="{{ form.field.id_for_label }}" class="control-label">
+								{{ form.field.label }}
+							</label>
+							<div class="controls controls-row">
+								{{ form.field }}
+								<span class="help-inline">
+									{{ form.field.errors }}
+								</span>
+							</div>
+						</div>
+
+					</fieldset>
+					<button type="submit" class="btn btn-primary btn-block">프로필 변경</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+{% include 'footer.html' %}

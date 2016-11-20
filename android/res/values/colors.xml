@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <color name="backgroundColor">#FFF9FAFA</color>
+    
+    
+    <color name="verydarkgray">#FF333333</color>
+    <color name="darkgray">#FF666666</color>
+    <color name="gray">#FF999999</color>
+    <color name="lightgray">#FFBBBBBB</color>
+</resources>

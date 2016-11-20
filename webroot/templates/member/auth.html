@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+<link href="{% static 'css/member/auth.css' %}" rel="stylesheet" media="screen">
+<form class="form-member" action="{% url 'member:auth' %}" method="post">{% csrf_token %}
+	<legend>회원가입 - 이메일 인증</legend>
+	{{ form.email }}
+	{{ form.email.errors }}
+		<div class="checkbox">
+		{{ form.terms_agree.label_tag }}{{ form.terms_agree }}{{ form.terms_agree.errors }}
+		</div>
+	<input type="submit" value="인증 메일 보내기" class="btn btn-large btn-primary btn-block">
+</form>
+{% endblock %}

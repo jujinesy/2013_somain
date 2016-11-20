@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block title %}온라인 서류제출{% endblock %}
+{% block page_title %}온라인 서류제출{% endblock %}
+
+{% block head %}
+<style>
+#submit_sections > section > .section > .title {
+	font-weight: bold;
+	font-size: 10pt;
+	height: 30px;
+	line-height: 30px;
+}
+#submit_sections > section > .section > .button {
+	
+}
+
+#sign_sections > section {
+	margin-bottom: 30px;
+}
+#sign_sections > section > .section {
+	margin-bottom: 0px;
+}
+#sign_sections > section > .section > .title {
+	font-size: 8pt;
+	height: 20px;
+	line-height: 20px;
+}
+#sign_sections > section > .section > .button {
+	text-align: right;
+}
+#sign_sections > section > .section > .title > .btn {
+	
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+		<br><br>
+<div class="container">
+	<div class="row-fluid">
+		<div id="submit_sections" class="span5" style="margin-bottom: 100px;">
+			<section>
+				<legend>MENTORING &nbsp;<a><i class="icon-angle-right"></i></a></legend>
+				<div class="row-fluid section">
+					<div class="span7 title">멘토링 보고서</div>
+					<div class="span5 button">
+						<a href="{% url 'document:mentoring_report_list' %}" class="span8 btn btn-dark btn-edge">제출서류 확인</a>
+						{% if user.type.title == '멘토' %}
+						<a href="{% url 'document:mentoring_report_write_choose' %}" class="span4 btn btn-dark btn-edge">작성</a>
+						{% endif %}
+					</div>
+				</div>
+				<div class="row-fluid section">
+					<div class="span7 title">프로젝트 활동비 지출 계획서</div>
+					<div class="span5 button">
+						<a class="span8 btn btn-dark btn-edge">제출서류 확인</a>
+						<a class="span4 btn btn-dark btn-edge">작성</a>
+					</div>
+				</div>
+				<div class="row-fluid section">
+					<div class="span7 title">회의록</div>
+					<div class="span5 button">
+						<a class="span8 btn btn-dark btn-edge">제출서류 확인</a>
+						<a class="span4 btn btn-dark btn-edge">작성</a>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<legend>COURSE &nbsp;<a><i class="icon-angle-right"></i></a></legend>
+				<div class="row-fluid section">
+					<ul class="no-style">
+						<li>동적으로 생성(관리자가 생성 시 이용자별로 생성)</li>
+						<li>ex) (기한 10/03) 10월 기부금 영수증 [7일 남음]</li>
+					</ul>
+				</div>
+			</section>
+			
+		</div>
+
+		<div id="sign_sections" class="span4 offset2">
+			<section>
+				<table class="table">
+					<caption class="right">서명해야할 서류 <a><i class="icon-angle-right"></i></a></caption>
+					<thead>
+						<tr>
+							<th width="30%">기한</th>
+							<th width="40%">타입</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for doc in require_sign_documents %}
+						<tr>
+							<td>{{ doc.deadline|date:'m/d H:i' }}</td>
+							<td>{{ doc.doc_title }}</td>
+							<td>
+								<a class="btn btn-mini btn-dark btn-edge" href="{% url 'document:view' doc.id %}">보기</a>
+								<a class="btn btn-mini btn-dark btn-edge" href="{% url 'document:sign' doc.id %}">서명</a>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+
+			<section>
+				<table class="table">
+					<caption class="right">최근 제출 서류 <a><i class="icon-angle-right"></i></a></caption>
+					<thead>
+						<tr>
+							<th width="30%">제출 일시</th>
+							<th width="40%">타입</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for doc in recent_submit_documents %}
+						<tr>
+							<td>{{ doc.deadline|date:'m/d H:i' }}</td>
+							<td>{{ doc.doc_title }}</td>
+							<td>
+								<a class="btn btn-mini btn-dark btn-edge" href="{% url 'document:view' doc.id %}">보기</a>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</section>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

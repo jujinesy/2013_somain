@@ -1,0 +1,150 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/bar_height"
+            android:background="@drawable/main_bar" >
+
+            <TextView
+                android:id="@+id/tvMainTest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:textSize="10dp"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:weightSum="100" >
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="33" />
+
+                <View
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="#FF000000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_profile"
+                android:orientation="vertical"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp" >
+
+                <LinearLayout style="@style/mainProfileRowLayout" >
+
+                    <TextView
+                        style="@style/mainProfileLeftTextView"
+                        android:text="NAME" />
+
+                    <TextView
+                        android:id="@+id/tvMainProfileName"
+                        style="@style/mainProfileRightTextView"
+                        android:text="이한영" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/mainProfileRowLayout" >
+
+                    <TextView
+                        style="@style/mainProfileLeftTextView"
+                        android:text="AGE" />
+
+                    <TextView
+                        android:id="@+id/tvMainProfileAge"
+                        style="@style/mainProfileRightTextView"
+                        android:text="26" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/mainProfileRowLayout" >
+
+                    <TextView
+                        style="@style/mainProfileLeftTextView"
+                        android:text="TERM" />
+
+                    <TextView
+                        android:id="@+id/tvMainProfileCourseTerm"
+                        style="@style/mainProfileRightTextView"
+                        android:text="4기" />
+                </LinearLayout>
+
+                <LinearLayout style="@style/mainProfileRowLayout" >
+
+                    <TextView
+                        style="@style/mainProfileLeftTextView"
+                        android:text="STEP" />
+
+                    <TextView
+                        android:id="@+id/tvMainProfileCourseStep"
+                        style="@style/mainProfileRightTextView"
+                        android:text="1단계 2차" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/btnMainNotice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/main_notice" />
+
+            <Button
+                android:id="@+id/btnMainDocument1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/main_document" />
+
+            <Button
+                android:id="@+id/btnMainDocument2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/main_sign" />
+
+            <Button
+                android:id="@+id/btnMainGcmTest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GcmTest"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btnMainLogout"
+        android:layout_gravity="bottom|left"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        android:src="@drawable/main_btn_logout" />
+
+</FrameLayout>

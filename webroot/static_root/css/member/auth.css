@@ -1,0 +1,21 @@
+.form-member {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-member .form-member-heading,
+.form-member .checkbox {
+  margin-bottom: 10px;
+}
+.form-member .checkbox {
+  font-weight: normal;
+}
+.form-member input[type="text"]{
+  position: relative;
+  font-size: 16px;
+  height: auto;
+  padding: 10px;
+}
+.form-member input[type="text"]:focus,{
+  z-index: 2;
+}
